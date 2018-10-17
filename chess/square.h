@@ -16,7 +16,7 @@ public:
 	shared_ptr<Piece> getPiece() const;
 	vector<int> getPos() const;
 	
-
+	void setPiece(shared_ptr<Piece> p);
 
 private:
 	string name;

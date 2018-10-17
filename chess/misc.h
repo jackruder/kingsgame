@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <iostream>
+#include <vector>
+using namespace std;
 enum class Turn { none = 0, white, black };
 
 enum class Pname
@@ -38,3 +40,10 @@ enum class Pname
 	bpawn8
 };
 
+int toIndex(vector<int> a);
+
+bool onBoard(int f, int r);
+bool onBoard(vector<int> pas);
+
+
+vector<int> toCoord(int i);

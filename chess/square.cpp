@@ -3,7 +3,7 @@
 
 
 Square::Square(string n, string c, vector<int> p)
-	:name(n), color(c), pos(p)
+	:name(n), color(c), pos(p), piece(nullptr)
 {
 }
 
@@ -27,6 +27,11 @@ string Square::getColor() const
 vector<int> Square::getPos() const
 {
 	return pos;
+}
+
+void Square::setPiece(shared_ptr<Piece> p)
+{
+	piece = p;
 }
 
 shared_ptr<Piece> Square::getPiece() const

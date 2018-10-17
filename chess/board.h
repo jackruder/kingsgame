@@ -2,25 +2,33 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <string>
+#include "square.h"
 #include "misc.h"
+#include "piece.h"
 using namespace std;
 
 class Piece;
-class Square;
-class Board 
+
+class Board
 {
-	public:
-		
-		Board();
 
-		~Board();
+private:
+	void genSquares();
+	Turn turn; // none, white, black enum
+	vector<shared_ptr<Piece>> pieces; // container of pointers to pieces
+	vector<Square> squares; //  2d container of squares
+public:
 
-		shared_ptr<Piece> getPiece(Pname name); // returns pointer to piece at location -- update for smart pointers
-		shared_ptr<Square> getSquare(vector<int> pos); // returns pointer to square at location -- update for smart pointers
-		Turn getTurn() const;
-	private:
-		
-		Turn turn; // none, white, black enum
-		vector<shared_ptr<Piece>> pieces; // container of pointers to pieces
-		vector<vector<shared_ptr<Square>>> squares; //  2d container of pointers to squares
+	Board();
+
+	~Board();
+
+	shared_ptr<Piece> getPiece(Pname name); // returns pointer to piece given enum name, vec location, or int ID
+	shared_ptr<Piece> getPiece(int id);
+	shared_ptr<Piece> getPiece(vector<int> loc);
+
+	Square& getSquare(vector<int> pos); // returns reference to square at location -- takes vector or pos
+	Square& getSquare(int pos);
+	Turn getTurn() const;
 };
