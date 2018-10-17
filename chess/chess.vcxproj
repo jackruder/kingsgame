@@ -119,6 +119,7 @@
     <ClInclude Include="misc.h" />
     <ClInclude Include="piece.h" />
     <ClInclude Include="square.h" />
+    <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="board.cpp" />
@@ -126,6 +127,7 @@
     <ClCompile Include="misc.cpp" />
     <ClCompile Include="piece.cpp" />
     <ClCompile Include="square.cpp" />
+    <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

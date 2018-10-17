@@ -19,11 +19,11 @@ class Piece
 		string getName() const;
 		vector<int> getPos();
 		weak_ptr<Board> getBoardPtr() const; 
-
 		void setPos(vector<int> p);  
 
 
-	private:
+	protected:
+		
 		int id;
 		string color;
 		string name;
@@ -32,5 +32,5 @@ class Piece
 		weak_ptr<Board> bptr; // weak_ptr because piece does not own board: we don't want an increase in refrence count 
 		Pname identifier;
 		bool vacant(const vector<int>& npos);  //checks if a square is allowed, regardless of check, turn, etc,.
-		
+		vector<vector<int>> ray(vector<vector<int>> directions);
 };

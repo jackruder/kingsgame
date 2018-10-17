@@ -51,7 +51,7 @@ enum class Pname //reorder these to correspond to order of instantiation
 
 
 int toIndex(const vector<int> &a);  //returns the integer index location
-vector<int> toCoord(const int &i);  //returns the actual location as a vector<int>
+vector<int> toCoord(int i);  //returns the actual location as a vector<int>
 
-bool onBoard(const int &f, const int &r); //checks if square is on the board given two int inputs; passed by const reference
+bool onBoard(int f, int r); //checks if square is on the board given two int inputs; passed by const reference
 bool onBoard(const vector<int>& pas); //overload for a vector instead; to be passed by const reference

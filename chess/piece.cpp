@@ -58,10 +58,16 @@ bool Piece::vacant(const vector<int>& npos)  //checks if a square is allowed, re
 		if (p == nullptr) // no piece, so square is vacant
 			return true;
 		else if (p->getColor() == color) //if new square has a piece of the same color, square is not vacant
-			return false; 
+			return false;
 		else
 			return true; //square then only can have a piece of a differrent color
 	}
 	else
 		return false; //cant move off the board
+
+}
+
+vector<vector<int>> Piece::ray(vector<vector<int>> directions)
+{
+
 }

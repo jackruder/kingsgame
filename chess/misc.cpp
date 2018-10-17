@@ -8,7 +8,7 @@ int toIndex(const vector<int> &a)
 }
 
 
-vector<int> toCoord(const int &i)
+vector<int> toCoord(int i)
 {
 	int a_y = i % 8;  //finds file value
 	int a_x = (i - a_y) / 8; //finds row value
@@ -18,7 +18,7 @@ vector<int> toCoord(const int &i)
 	return a;
 }
 
-bool onBoard(const int &f, const int &r)
+bool onBoard(int f, int r)
 {
 	if (f >= 0 && f < 8 && r >= 0 && r < 8) 
 		return true;
