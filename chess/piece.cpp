@@ -3,8 +3,8 @@ using namespace std;
 
 
 //constructor
-Piece::Piece(string c, string s, shared_ptr<Board> brd, Pname i, int id)
-	: color(c), name(s), bptr(brd), identifier(i), pos({})
+Piece::Piece(string c, string n, shared_ptr<Board> brd, Pname i, int id)
+	: color(c), name(n), bptr(brd), identifier(i), pos({})
 {
 
 }
@@ -48,57 +48,20 @@ void Piece::setPos(vector<int> p)
 }
 
 // Member Functions
-void Piece::move(vector<int>& sq)
-{
-	vector<int> current = pos;
-	Square& newSquare = bptr.lock()->getSquare(sq);
 
-	if (!current.empty())
-	{
-		Square& currentSquare = bptr.lock()->getSquare(current);
-		if (newSquare.getPiece() == nullptr)
-		{
-			newSquare.setPiece(bptr.lock()->getPiece(id));
-			currentSquare.setPiece(nullptr);
-		}
-		else
-		{
-			vector<int> empty;
-			newSquare.getPiece()->setPos(empty);
-			newSquare.setPiece(bptr.lock()->getPiece(id));
-			currentSquare.setPiece(nullptr);
-		}
-	}
-	else
-	{
-		if (newSquare.getPiece() == nullptr)
-		{
-			newSquare.setPiece(bptr.lock()->getPiece(id));
-		}
-		else
-		{
-			vector<int> empty;
-			newSquare.getPiece()->setPos(empty);
-			newSquare.setPiece(bptr.lock()->getPiece(id));
-
-		}
-		setPos(sq);
-	}
-}
-
-bool Piece::vacant(const vector<int>& npos)
+bool Piece::vacant(const vector<int>& npos)  //checks if a square is allowed, regardless of check, turn, etc,.
 {
 	if (onBoard(npos))
 	{
-		shared_ptr<Board> b = bptr.lock();
-		shared_ptr<Piece> p = b->getSquare(npos).getPiece();
-		if (p == nullptr)
+		shared_ptr<Board> b = bptr.lock(); //access board
+		shared_ptr<Piece> p = b->getPiece(npos);  //gets the ptr to piece at new position; nullptr if no piece
+		if (p == nullptr) // no piece, so square is vacant
 			return true;
-		else if (p->getColor() == color)
-			return false;
+		else if (p->getColor() == color) //if new square has a piece of the same color, square is not vacant
+			return false; 
 		else
-			return true;
+			return true; //square then only can have a piece of a differrent color
 	}
 	else
-		return false;
+		return false; //cant move off the board
 }

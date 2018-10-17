@@ -4,7 +4,7 @@
 using namespace std;
 enum class Turn { none = 0, white, black };
 
-enum class Pname
+enum class Pname //reorder these to correspond to order of instantiation
 {
 	wrook1,
 	wknight1,
@@ -39,11 +39,19 @@ enum class Pname
 	bpawn7,
 	bpawn8
 };
+/* We will use integer indexing of a 2d grid to refer to squares. This is to keep squares close together in memory and to keep things clean.
+2x2 dimensional example of this
 
-int toIndex(vector<int> a);
+	| 2 = (0,1) 3 = (1,1) |
+	| 0 = (0,0) 1 = (1,0) |
+	
+	
+	toIndex and toCoord implement this functionality for a 8x8 board
+	*/
 
-bool onBoard(int f, int r);
-bool onBoard(vector<int> pas);
 
+int toIndex(const vector<int> &a);  //returns the integer index location
+vector<int> toCoord(const int &i);  //returns the actual location as a vector<int>
 
-vector<int> toCoord(int i);
+bool onBoard(const int &f, const int &r); //checks if square is on the board given two int inputs; passed by const reference
+bool onBoard(const vector<int>& pas); //overload for a vector instead; to be passed by const reference
