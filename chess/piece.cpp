@@ -129,3 +129,4 @@ std::vector<Vec2> Piece::ray(const std::vector<Vec2>& directions)
 	}
 	return results;
 }
+
