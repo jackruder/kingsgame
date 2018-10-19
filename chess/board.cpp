@@ -57,7 +57,7 @@ void Board::genSquares()
 				c = "black";
 			else
 				c = "white";
-			Vec2 p = Vec2(f,r); //initializes location std::vector
+			Vec2 p(f,r); //initializes location std::vector
 			squares.emplace_back(n, c, p);
 		}
 	}
@@ -67,8 +67,8 @@ void Board::move(std::shared_ptr<Piece> p, Vec2 &sq)
 {
 	Vec2 current = p->getPos();
 	Square& newSquare = getSquare(sq);  //gets the square at the new location passed to move()
-
-	if (!(current == Vec2(-1, -1)))									//checks if the piece is on a square
+	Vec2 empty(-1, -1);					//initialize an empty location
+	if (!(current == empty))									//checks if the piece is on a square
 	{
 		Square& currentSquare = getSquare(current);	//gets the square the piece is on
 		if (newSquare.getPiece() == nullptr)						//checks if the new square has a piece
@@ -77,8 +77,7 @@ void Board::move(std::shared_ptr<Piece> p, Vec2 &sq)
 			currentSquare.setPiece(nullptr);				//then set the piece of the old square to none
 		}
 		else												//if there is a piece
-		{
-			Vec2 empty = Vec2(-1,-1);								//initialize an empty location
+		{										
 			newSquare.getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
 			newSquare.setPiece(p);	//sets the piece of the new square to the current piece
 			currentSquare.setPiece(nullptr);				//sets the piece of the old square to none
@@ -92,7 +91,6 @@ void Board::move(std::shared_ptr<Piece> p, Vec2 &sq)
 		}
 		else												//if yes,
 		{
-			Vec2 empty = Vec2(-1, -1);						    //initialize an empty location
 			newSquare.getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
 			newSquare.setPiece(p);  //sets the piece of the new square to the current piece
 

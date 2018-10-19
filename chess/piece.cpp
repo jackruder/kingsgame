@@ -67,7 +67,65 @@ bool Piece::vacant(const Vec2& npos)  //checks if a square is allowed, regardles
 
 }
 
-/*std::vector<Vec2> Piece::ray(std::vector<Vec2> directions)
-{
 
-}*/
+
+void Piece::move(Vec2 &sq){
+	Vec2 current = pos;
+	Square& newSquare = bptr.lock()->getSquare(sq);  //gets the square at the new location passed to move()
+	Vec2 empty(-1, -1);                         //initialize an empty location
+	if (!(current == empty))									//checks if the piece is on a square
+	{
+		Square& currentSquare = bptr.lock()->getSquare(current);	//gets the square the piece is on
+		if (newSquare.getPiece() == nullptr)						//checks if the new square has a piece
+		{
+			newSquare.setPiece(bptr.lock()->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
+			currentSquare.setPiece(nullptr);				//then set the piece of the old square to none
+		}
+		else												//if there is a piece
+		{
+			newSquare.getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+			newSquare.setPiece(bptr.lock()->getPiece(id));	//sets the piece of the new square to the current piece
+			currentSquare.setPiece(nullptr);				//sets the piece of the old square to none
+		}
+	}
+	else                                                 //if the piece is not on a square
+	{
+		if (newSquare.getPiece() == nullptr)  //checks if the new square has a piece
+		{
+			newSquare.setPiece(bptr.lock()->getPiece(id)); // if no, sets the piece of the new square to the current piece
+		}
+		else												//if yes,
+		{
+			newSquare.getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+			newSquare.setPiece(bptr.lock()->getPiece(id));  //sets the piece of the new square to the current piece
+
+		}
+		bptr.lock()->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
+	}
+}
+
+
+
+std::vector<Vec2> Piece::ray(const std::vector<Vec2>& directions)
+{
+	std::vector<Vec2> results;
+	int size = directions.size();
+	for (int d = 0; d < size; d++)
+	{
+		int i = 1;
+		bool stop = false;
+		while (!stop)
+		{
+			Vec2 a(pos + directions[d] * i);
+			if (vacant(a))
+			{
+				results.push_back(a);
+				i++;
+			}
+			else
+				stop = true;
+			
+		}
+	}
+	return results;
+}

@@ -21,7 +21,7 @@ class Piece
 		Vec2 getPos();
 		std::weak_ptr<Board> getBoardPtr() const; 
 		void setPos(Vec2 p);  
-
+		void move(Vec2 &sq);
 
 	protected:
 		
@@ -33,5 +33,7 @@ class Piece
 		std::weak_ptr<Board> bptr; // weak_ptr because piece does not own board: we don't want an increase in refrence count 
 		Pname identifier;
 		bool vacant(const Vec2& npos);  //checks if a square is allowed, regardless of check, turn, etc,.
-		//std::vector<Vec2> ray(std::vector<Vec2> directions);
+		std::vector<Vec2> ray(const std::vector<Vec2>& directions);
+		
+
 };
