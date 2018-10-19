@@ -2,10 +2,10 @@
 
 int main()
 {
-	shared_ptr<Board> b = make_shared<Board>();
+	std::shared_ptr<Board> b = std::make_shared<Board>();
 
 	int a; 
-	cin >> a;
+	std::cin >> a;
 
 	return 0;
 

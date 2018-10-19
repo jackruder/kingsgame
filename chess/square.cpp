@@ -2,7 +2,7 @@
 
 
 //constructor
-Square::Square(string n, string c, vector<int> p)
+Square::Square(std::string n, std::string c, Vec2 p)
 	:name(n), color(c), pos(p), piece(nullptr)
 {
 }
@@ -14,28 +14,28 @@ Square::~Square()
 
 //getter functions
 
-string Square::getName() const
+std::string Square::getName() const
 {
 	return name;
 }
 
-string Square::getColor() const
+std::string Square::getColor() const
 {
 	return color;
 }
 
-vector<int> Square::getPos() const
+Vec2 Square::getPos() const
 {
 	return pos;
 }
 
-shared_ptr<Piece> Square::getPiece() const
+std::shared_ptr<Piece> Square::getPiece() const
 {
 	return piece;
 }
 
 //setter functions
-void Square::setPiece(shared_ptr<Piece> p)
+void Square::setPiece(std::shared_ptr<Piece> p)
 {
 	piece = p;
 }

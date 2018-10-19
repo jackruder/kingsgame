@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include <iostream>
-#include <vector>
-using namespace std;
-enum class Turn { none = 0, white, black };
+#include "Vec2.h"
+enum class Turn : int { none = 0, white, black };
 
 enum class Pname //reorder these to correspond to order of instantiation
 {
@@ -39,7 +38,7 @@ enum class Pname //reorder these to correspond to order of instantiation
 	bpawn7,
 	bpawn8
 };
-/* We will use integer indexing of a 2d grid to refer to squares. This is to keep squares close together in memory and to keep things clean.
+/* We will use integer (int datatype to save memory) indexing of a 2d grid to refer to squares. This is to keep squares close together in memory and to keep things clean.
 2x2 dimensional example of this
 
 	| 2 = (0,1) 3 = (1,1) |
@@ -49,9 +48,8 @@ enum class Pname //reorder these to correspond to order of instantiation
 	toIndex and toCoord implement this functionality for a 8x8 board
 	*/
 
-
-int toIndex(const vector<int> &a);  //returns the integer index location
-vector<int> toCoord(int i);  //returns the actual location as a vector<int>
+int toIndex(Vec2 a);  //returns the integer index location
+Vec2 toCoord(int i);  //returns the actual location as a vec2
 
 bool onBoard(int f, int r); //checks if square is on the board given two int inputs; passed by const reference
-bool onBoard(const vector<int>& pas); //overload for a vector instead; to be passed by const reference
+bool onBoard(Vec2 pos); //overload for a vector instead; to be passed by const reference

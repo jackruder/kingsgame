@@ -1,27 +1,27 @@
 #pragma once
 #include <iostream>
+#include "Vec2.h"
 #include <vector>
 #include <memory>
 #include "misc.h"
-using namespace std;
 class Piece;
 
 class Square
 {
 public:
-	Square(string n, string c, vector<int> pos);
+	Square(std::string n, std::string c, Vec2 pos);
 	~Square();
-	string getName() const;
-	string getColor() const;
-	shared_ptr<Piece> getPiece() const;
-	vector<int> getPos() const;
+	std::string getName() const;
+	std::string getColor() const;
+	std::shared_ptr<Piece> getPiece() const;
+	Vec2 getPos() const;
 	
-	void setPiece(shared_ptr<Piece> p);
+	void setPiece(std::shared_ptr<Piece> p);
 
 private:
-	string name;
-	string color;
-	shared_ptr<Piece> piece;
-	vector<int> pos;
+	std::string name;
+	std::string color;
+	std::shared_ptr<Piece> piece;
+	Vec2 pos;
 };
 

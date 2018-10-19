@@ -3,8 +3,8 @@ using namespace std;
 
 
 //constructor
-Piece::Piece(string c, string n, shared_ptr<Board> brd, Pname i, int id)
-	: color(c), name(n), bptr(brd), identifier(i), pos({})
+Piece::Piece(std::string c, std::string n, std::shared_ptr<Board> brd, Pname i, int id)
+	: color(c), name(n), bptr(brd), identifier(i), pos()
 {
 
 }
@@ -12,12 +12,12 @@ Piece::Piece(string c, string n, shared_ptr<Board> brd, Pname i, int id)
 
 
 // Getter functions
-string Piece::getName() const 
+std::string Piece::getName() const 
 {
 	return name;
 }
 
-string Piece::getColor() const
+std::string Piece::getColor() const
 {
 	return color;
 }
@@ -27,34 +27,34 @@ int Piece::getId() const
 	return id;
 }
 
-char Piece::getSymb() const
+int Piece::getSymb() const
 {
 	return symb;
 }
 
-weak_ptr<Board> Piece::getBoardPtr() const
+std::weak_ptr<Board> Piece::getBoardPtr() const
 {
 	return bptr;
 }
 
-vector<int> Piece::getPos()
+Vec2 Piece::getPos()
 {
 	return pos;
 }
 
-void Piece::setPos(vector<int> p)
+void Piece::setPos(Vec2 p)
 {
 	pos = p;
 }
 
 // Member Functions
 
-bool Piece::vacant(const vector<int>& npos)  //checks if a square is allowed, regardless of check, turn, etc,.
+bool Piece::vacant(const Vec2& npos)  //checks if a square is allowed, regardless of check, turn, etc,.
 {
 	if (onBoard(npos))
 	{
-		shared_ptr<Board> b = bptr.lock(); //access board
-		shared_ptr<Piece> p = b->getPiece(npos);  //gets the ptr to piece at new position; nullptr if no piece
+		std::shared_ptr<Board> b = bptr.lock(); //access board
+		std::shared_ptr<Piece> p = b->getPiece(npos);  //gets the ptr to piece at new position; nullptr if no piece
 		if (p == nullptr) // no piece, so square is vacant
 			return true;
 		else if (p->getColor() == color) //if new square has a piece of the same color, square is not vacant
@@ -67,7 +67,7 @@ bool Piece::vacant(const vector<int>& npos)  //checks if a square is allowed, re
 
 }
 
-vector<vector<int>> Piece::ray(vector<vector<int>> directions)
+/*std::vector<Vec2> Piece::ray(std::vector<Vec2> directions)
 {
 
-}
+}*/
