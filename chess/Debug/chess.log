@@ -1,7 +1,2 @@
-﻿  board.cpp
-  main.cpp
-  misc.cpp
-  piece.cpp
-  square.cpp
-  Generating Code...
+﻿  Vec2.cpp
   chess.vcxproj -> C:\Users\Jack Ruder\Desktop\chess\Debug\chess.exe
