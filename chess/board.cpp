@@ -8,32 +8,45 @@ Board::Board()
 	genSquares();
 }
 
+
+//Board::operator=(const Board& b)
+
 Board::~Board() 
 { 
 }
 
-Square& Board::getSquare(Vec2 pos)// returns square at location
+std::vector<std::shared_ptr<Square>> Board::getSquares() const
+{
+	return squares;
+}
+
+std::vector<std::shared_ptr<Piece>> Board::getPieces() const
+{
+	return pieces;
+}
+
+std::shared_ptr<Square> Board::getSquare(Vec2 pos) const // returns square at location
 {
 	return squares[toIndex(pos)];
 }
 
-Square& Board::getSquare(int id)// returns square at location id
+std::shared_ptr<Square> Board::getSquare(int id) const // returns square at location id
 {
 	return squares[id];
 }
 
-std::shared_ptr<Piece> Board::getPiece(Pname name) // returns pointer to piece by enum name
+std::shared_ptr<Piece> Board::getPiece(Pname name) const // returns pointer to piece by enum name
 {
 	return pieces[static_cast<int>(name)];
 } 
-std::shared_ptr<Piece> Board::getPiece(int id)
+std::shared_ptr<Piece> Board::getPiece(int id) const
 {
 	return pieces[id];
 }
-std::shared_ptr<Piece> Board::getPiece(Vec2 loc)
+std::shared_ptr<Piece> Board::getPiece(Vec2 loc) const
 {
-	Square& s = getSquare(loc);
-	return s.getPiece();
+	std::shared_ptr<Square> s = getSquare(loc);
+	return s->getPiece();
 }
 
 
@@ -63,36 +76,36 @@ void Board::genSquares()
 	}
 }
 
-void Board::move(std::shared_ptr<Piece> p, Vec2 &sq)
+void Board::move(std::shared_ptr<Piece> p, Vec2 sq)
 {
 	Vec2 current = p->getPos();
-	Square& newSquare = getSquare(sq);  //gets the square at the new location passed to move()
+	std::shared_ptr<Square> newSquare = getSquare(sq);  //gets the square at the new location passed to move()
 	Vec2 empty(-1, -1);					//initialize an empty location
 	if (!(current == empty))									//checks if the piece is on a square
 	{
-		Square& currentSquare = getSquare(current);	//gets the square the piece is on
-		if (newSquare.getPiece() == nullptr)						//checks if the new square has a piece
+		std::shared_ptr<Square> currentSquare = getSquare(current);	//gets the square the piece is on
+		if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 		{
-			newSquare.setPiece(p);	//if no piece, we just set the piece of the new square to the current piece
-			currentSquare.setPiece(nullptr);				//then set the piece of the old square to none
+			newSquare->setPiece(p);	//if no piece, we just set the piece of the new square to the current piece
+			currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 		}
 		else												//if there is a piece
 		{										
-			newSquare.getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-			newSquare.setPiece(p);	//sets the piece of the new square to the current piece
-			currentSquare.setPiece(nullptr);				//sets the piece of the old square to none
+			newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+			newSquare->setPiece(p);	//sets the piece of the new square to the current piece
+			currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 		}
 	}
 	else                                                 //if the piece is not on a square
 	{
-		if (newSquare.getPiece() == nullptr)  //checks if the new square has a piece
+		if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 		{
-			newSquare.setPiece(p); // if no, sets the piece of the new square to the current piece
+			newSquare->setPiece(p); // if no, sets the piece of the new square to the current piece
 		}
 		else												//if yes,
 		{
-			newSquare.getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-			newSquare.setPiece(p);  //sets the piece of the new square to the current piece
+			newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+			newSquare->setPiece(p);  //sets the piece of the new square to the current piece
 
 		}
 		p->setPos(sq); //sets the locaiton of the current piece to the new location

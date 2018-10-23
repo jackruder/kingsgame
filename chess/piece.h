@@ -13,12 +13,14 @@ class Piece
 {
 public:
 
-	Piece(std::string c, std::string n, std::shared_ptr<Board> brd, Pname i, int id);
+	Piece(std::string c, std::string n, std::shared_ptr<Board> brd, int i); 
+
 	virtual ~Piece() = 0;
-	int getId() const;
+	int getID();
 	int getSymb() const;
 	std::string getColor() const;
 	std::string getName() const;
+
 	Vec2 getPos();
 	std::weak_ptr<Board> getBoardPtr() const;
 	void setPos(Vec2 p);
@@ -32,7 +34,6 @@ protected:
 	Vec2 pos; // Pieces should be initialized with no location, which will be a nullptr
 	int symb;
 	std::weak_ptr<Board> bptr; // weak_ptr because piece does not own board: we don't want an increase in refrence count	A+3"+3
-	Pname identifier;
 	bool vacant(const Vec2& npos);  //checks if a square is allowed, regardless of check, turn, etc,.
 	std::vector<Vec2> ray(const std::vector<Vec2>& directions);
 
