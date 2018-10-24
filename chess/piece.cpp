@@ -75,39 +75,42 @@ bool Piece::vacant(const Vec2& npos)  //checks if a square is allowed, regardles
 
 
 
-void Piece::move(Vec2 sq){
+void Piece::move(Vec2 sq) {
+	Vec2 empty(-1, -1);   //initialize an empty location
 	Vec2 current = pos;
-	std::shared_ptr<Square> newSquare = bptr.lock()->getSquare(sq);  //gets the square at the new location passed to move()
-	Vec2 empty(-1, -1);                         //initialize an empty location
-	if (!(current == empty))									//checks if the piece is on a square
+	if (!(sq == empty))		
 	{
-		std::shared_ptr<Square> currentSquare = bptr.lock()->getSquare(current);	//gets the square the piece is on
-		if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
+		std::shared_ptr<Square> newSquare = bptr.lock()->getSquare(sq);  //gets the square at the new location passed to move()              
+		if (!(current == empty))									//checks if the piece is on a square
 		{
-			newSquare->setPiece(bptr.lock()->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
-			currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
+			std::shared_ptr<Square> currentSquare = bptr.lock()->getSquare(current);	//gets the square the piece is on
+			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
+			{
+				newSquare->setPiece(bptr.lock()->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
+			}
+			else												//if there is a piece
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(bptr.lock()->getPiece(id));	//sets the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
+			}
 		}
-		else												//if there is a piece
+		else                                                 //if the piece is not on a square
 		{
-			newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-			newSquare->setPiece(bptr.lock()->getPiece(id));	//sets the piece of the new square to the current piece
-			currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
-		}
-	}
-	else                                                 //if the piece is not on a square
-	{
-		if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
-		{
-			newSquare->setPiece(bptr.lock()->getPiece(id)); // if no, sets the piece of the new square to the current piece
-		}
-		else												//if yes,
-		{
-			newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-			newSquare->setPiece(bptr.lock()->getPiece(id));  //sets the piece of the new square to the current piece
+			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
+			{
+				newSquare->setPiece(bptr.lock()->getPiece(id)); // if no, sets the piece of the new square to the current piece
+			}
+			else												//if yes,
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(bptr.lock()->getPiece(id));  //sets the piece of the new square to the current piece
 
+			}
 		}
-		bptr.lock()->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 	}
+	bptr.lock()->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
 

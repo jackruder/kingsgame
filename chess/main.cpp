@@ -4,7 +4,7 @@
 int main()
 {
 	std::shared_ptr<Board> b = std::make_shared<Board>();
-	b->getPiece(4);
+	b->starting();
 	int a; 
 	std::cin >> a;
 

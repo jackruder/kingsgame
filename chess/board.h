@@ -13,12 +13,12 @@ class Board : public std::enable_shared_from_this<Board>
 {
 
 private:
-	void genSquares(std::vector<std::shared_ptr<Square>>& storage);
+	void genSquares();
 	Turn turn; // none, white, black enum
 	std::vector<std::shared_ptr<Piece>> pieces; // container of pointers to pieces
 	std::vector<std::shared_ptr<Square>> squares; //  2d container of squares
 	void updatepieces(); //updates the board to reflect the position of all pieces
-	void genPieces(std::vector<std::shared_ptr<Piece>>& storage);
+	void genPieces();
 
 public:
 
