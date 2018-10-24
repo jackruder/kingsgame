@@ -1,1 +1,9 @@
-﻿  board.cpp
+﻿  Bishop.cpp
+  board.cpp
+  King.cpp
+  Knight.cpp
+  Pawn.cpp
+  Queen.cpp
+  Rook.cpp
+  Generating Code...
+  chess.vcxproj -> C:\Users\Jack Ruder\Desktop\chess\Debug\chess.exe
