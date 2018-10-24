@@ -13,9 +13,9 @@ class Piece
 {
 public:
 
-	Piece(std::string c, std::string n, std::shared_ptr<Board> brd, int i); 
+	Piece(std::string c, std::string n, std::weak_ptr<Board> brd, int i, Vec2 loc); 
 
-	virtual ~Piece() = 0;
+	~Piece();
 	int getID();
 	int getSymb() const;
 	std::string getColor() const;
@@ -24,7 +24,8 @@ public:
 	Vec2 getPos();
 	std::weak_ptr<Board> getBoardPtr() const;
 	void setPos(Vec2 p);
-	void move(Vec2 &sq);
+	void setPos(int p);
+	void move(Vec2 sq);
 	virtual std::vector<Vec2> availablemoves() = 0;
 protected:
 

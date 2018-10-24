@@ -3,12 +3,15 @@ using namespace std;
 
 
 //constructor
-Piece::Piece(std::string c, std::string n, std::shared_ptr<Board> brd, int i)
-	: color(c), name(n), bptr(brd), id(i), pos(Vec2(-1,-1))
+Piece::Piece(std::string c, std::string n, std::weak_ptr<Board> brd, int i, Vec2 loc)
+	: color(c), name(n), bptr(brd), id(i), pos(loc)
 {
 
 }
 
+Piece::~Piece()
+{
+}
 
 // Getter functions
 std::string Piece::getName() const 
@@ -45,6 +48,10 @@ void Piece::setPos(Vec2 p)
 {
 	pos = p;
 }
+void Piece::setPos(int p)
+{
+	pos = toCoord(p);
+}
 
 // Member Functions
 
@@ -68,7 +75,7 @@ bool Piece::vacant(const Vec2& npos)  //checks if a square is allowed, regardles
 
 
 
-void Piece::move(Vec2 &sq){
+void Piece::move(Vec2 sq){
 	Vec2 current = pos;
 	std::shared_ptr<Square> newSquare = bptr.lock()->getSquare(sq);  //gets the square at the new location passed to move()
 	Vec2 empty(-1, -1);                         //initialize an empty location

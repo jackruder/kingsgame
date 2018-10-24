@@ -19,7 +19,8 @@ public:
 	Vec2& operator*=(int n);
 	Vec2& operator/=(const Vec2& v);
 	bool operator==(const Vec2& v) const;
-	
+	bool operator!=(const Vec2 & v) const;
 	int operator[](const int& n); 
-	
+	friend std::ostream& operator<<(std::ostream &output, const Vec2& v);
+
 };

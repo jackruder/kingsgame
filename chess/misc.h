@@ -1,18 +1,19 @@
 ﻿#pragma once
 #include <iostream>
 #include "Vec2.h"
+#include <vector>
 enum class Turn : int { none = 0, white, black };
 
 enum class Pname //reorder these to correspond to order of instantiation
 {
 	wrook1,
-	wknight1,
-	wbishop1,
-	wqueen1,
-	wking1,
-	wbishop2,
-	wknight2,
 	wrook2,
+	wbishop1,
+	wbishop2,
+	wknight1,
+	wknight2,
+	wking1,
+	wqueen1,
 	wpawn1,
 	wpawn2,
 	wpawn3,
@@ -22,13 +23,13 @@ enum class Pname //reorder these to correspond to order of instantiation
 	wpawn7,
 	wpawn8,
 	brook1,
-	bknight1,
-	bbishop1,
-	bqueen1,
-	bking1,
-	bbishop2,
-	bknight2,
 	brook2,
+	bbishop1,
+	bbishop2,
+	bknight1,
+	bknight2,
+	bking1,
+	bqueen1,
 	bpawn1,
 	bpawn2,
 	bpawn3,
@@ -36,8 +37,12 @@ enum class Pname //reorder these to correspond to order of instantiation
 	bpawn5,
 	bpawn6,
 	bpawn7,
-	bpawn8
+	bpawn8,
+
 };
+
+extern std::vector<int> startpos;
+
 /* We will use integer (int datatype to save memory) indexing of a 2d grid to refer to squares. This is to keep squares close together in memory and to keep things clean.
 2x2 dimensional example of this
 

@@ -1,5 +1,5 @@
 #include "Vec2.h"
-
+#include <iostream>
 Vec2::Vec2() :i(-1), j(-1) {}
 
 Vec2::Vec2(int _i, int _j)
@@ -30,6 +30,10 @@ bool Vec2::operator==(const Vec2& v) const
 	else 
 		return false; 
 }
+bool Vec2::operator!=(const Vec2& v) const
+{
+	return (!(*this == v));
+}
 int Vec2::operator[](const int& n)
 {
 	if (n == 0)
@@ -43,3 +47,8 @@ int Vec2::operator[](const int& n)
 	}
 }
 
+std::ostream &operator<<(std::ostream &output, const Vec2& v)
+{
+	output << "(" << v.i << ", " << v.j << ")";
+	return output;
+}

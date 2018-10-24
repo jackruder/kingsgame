@@ -1,19 +1,49 @@
 #include "board.h"
+#include <typeinfo>
 #include <string>
 #include "piece.h"
+#include "Rook.h"
+#include "Pawn.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "Queen.h"
+#include "King.h"
 Board::Board()
 	:	turn(Turn::none)
 {
 	//instantiate squares then pieces
-	genSquares();
+	genSquares(squares);
+	genPieces(pieces);
+	starting();
+
+
 }
 
 
-//Board::operator=(const Board& b)
 
-Board::~Board() 
+/*Board Board::operator=(const Board& b)
+{
+	turn = b.getTurn();
+	const std::vector<std::shared_ptr<Piece>>& oldpieces = b.getPieces();
+	int s = oldpieces.size();
+	pieces.clear();
+	pieces.reserve(s);
+	for (int i = 0; i < s; i++)
+	{
+		std::shared_ptr<Piece> oldp = oldpieces[i];
+		std::shared_ptr<Piece> newp = std::make_shared<WTF>(*oldp);
+		pieces.push_back(newp);
+	}
+	genSquares(squares);
+	updatepieces();
+
+
+}*/
+
+Board::~Board()
 { 
 }
+
 
 std::vector<std::shared_ptr<Square>> Board::getSquares() const
 {
@@ -55,11 +85,11 @@ Turn Board::getTurn() const
 	return turn;
 }
 
-void Board::genSquares()
+void Board::genSquares(std::vector<std::shared_ptr<Square>>& storage)
 {
 	std::string rows = "12345678";
 	std::string files = "abcdefgh";
-	squares.reserve(64); //allocates memory for std::vector
+	storage.reserve(64); //allocates memory for std::vector
 	for (int r = 0; r < 8; r++)
 	{
 		for (int f = 0; f < 8; f++)
@@ -70,8 +100,9 @@ void Board::genSquares()
 				c = "black";
 			else
 				c = "white";
-			Vec2 p(f,r); //initializes location std::vector
-			squares.emplace_back(n, c, p);
+			Vec2 p = Vec2(f,r); //initializes location 
+			std::shared_ptr<Square> newsquare = std::make_shared<Square>(n, c, p);
+			storage.push_back(newsquare);
 		}
 	}
 }
@@ -112,4 +143,79 @@ void Board::move(std::shared_ptr<Piece> p, Vec2 sq)
 	}
 }
 
-///void Board::genPieces()
+void Board::updatepieces()
+{
+	for (std::shared_ptr<Piece> _p : pieces)
+	{
+		Vec2 pos = _p->getPos();
+		if (pos != Vec2(-1, -1))
+			_p->move(pos);
+		else
+			std::cout << _p->getName() << " does not have a location, no update required" << std::endl;
+	}
+}
+
+void Board::genPieces(std::vector<std::shared_ptr<Piece>>& storage)
+{	
+	storage.clear();
+	storage.reserve(32);
+	std::string colors[2] = { "white", "black" };
+	int _id = 0;
+	for (std::string c : colors)
+	{
+		char _c = c[0];
+		for (int i = 0; i < 2; i++)
+		{
+			std::string name = _c + "rook" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Rook>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			storage.push_back(newp);
+			_id++;
+		}
+		for (int i = 0; i < 2; i++)
+		{
+			std::string name = _c + "bishop" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Bishop>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			storage.push_back(newp);
+			_id++;
+		}
+		for (int i = 0; i < 2; i++)
+		{
+			std::string name = _c + "knight" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Knight>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			storage.push_back(newp);
+			_id++;
+		}
+		{ //scopes to keep same var names
+			std::string name = _c + "king1";
+			std::shared_ptr<Piece> newp = std::make_shared<King>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			storage.push_back(newp);
+			_id++;
+		}
+		{ 
+			std::string name = _c + "queen1";
+			std::shared_ptr<Piece> newp = std::make_shared<Queen>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			storage.push_back(newp);
+			_id++;
+		}
+		for (int i = 0; i < 8; i++)
+		{
+			std::string name = _c + "pawn" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Pawn>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			storage.push_back(newp);
+			_id++;
+		}
+	}
+}
+void Board::setPosition(std::vector<int> position, Turn t)
+{
+	for (int i = 0; i < static_cast<int>(pieces.size()); i++)
+	{
+		pieces[i]->setPos(position[i]);	
+	}
+	updatepieces();
+	turn = t;
+}
+void Board::starting() //returns board and pieces to starting position
+{
+	setPosition(startpos, Turn::white);
+}
