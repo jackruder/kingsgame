@@ -10,8 +10,8 @@ int toIndex(Vec2 a)
 
 Vec2 toCoord(int i)
 {
-	int a_y = i % 8;  //finds file value
-	int a_x = (i - a_y) / 8; //finds row value
+	int a_x = i % 8;  //finds file value
+	int a_y = (i - a_x) / 8; //finds row value
 
 	Vec2 a = Vec2(a_x, a_y);
 

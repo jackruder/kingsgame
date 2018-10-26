@@ -4,8 +4,8 @@ class Knight : public Piece
 {
 	std::vector<Vec2> directions;
 public:
-	Knight(std::string c, std::string n, std::weak_ptr<Board> brd, int _id, Vec2 loc);
+	Knight(std::string c, std::string n, int _id, Vec2 loc);
 	~Knight();
-	std::vector<Vec2> availablemoves();
+	std::vector<Vec2> availablemoves(Board* b);
 };
 

@@ -1,8 +1,8 @@
 #include "Pawn.h"
 
 
-Pawn::Pawn(std::string c, std::string n, std::weak_ptr<Board> brd, int _id, Vec2 loc)
-	:Piece(c, n, brd, _id, loc)
+Pawn::Pawn(std::string c, std::string n, int _id, Vec2 loc)
+	:Piece(c, n, _id, loc)
 {
 }
 
@@ -10,7 +10,7 @@ Pawn::~Pawn()
 {
 }
 
-std::vector<Vec2> Pawn::availablemoves()
+std::vector<Vec2> Pawn::availablemoves(Board* b)
 {
 	std::vector<Vec2> moves;
 	int t;
@@ -29,7 +29,7 @@ std::vector<Vec2> Pawn::availablemoves()
 	if (pos[1] == t)
 	{
 		Vec2 forward2(pos[0], pos[1] + 2 * d[1]);
-		if (vacant(forward2)) 
+		if (vacant(b, forward2)) 
 		{
 			moves.push_back(forward2);
 		}			
@@ -39,12 +39,12 @@ std::vector<Vec2> Pawn::availablemoves()
 	Vec2 capleft(pos[0] - 1, newposr);
 	Vec2 capright(pos[0] + 1, newposr);
 	Vec2 caps[2] = { capleft, capright };
-	if (vacant(forward1))
+	if (vacant(b, forward1))
 	{
 		moves.push_back(forward1);
 	}
 	for (Vec2 v : caps)
-		if (vacant(v) && !(bptr.lock()->getPiece(v) == nullptr))
+		if (vacant(b, v) && !(b->getPiece(v) == nullptr))
 		{
 			moves.push_back(v);
 		}

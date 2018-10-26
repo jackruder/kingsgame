@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "misc.h"
+#include <string>
 class Piece;
 
 class Square
@@ -11,12 +12,12 @@ class Square
 public:
 	Square(std::string n, std::string c, Vec2 pos);
 	~Square();
-	std::string getName() const;
-	std::string getColor() const;
-	std::shared_ptr<Piece> getPiece() const;
-	Vec2 getPos() const;
-	
+	std::string getName();
+	std::string getColor();
+	std::shared_ptr<Piece> getPiece();
+	Vec2 getPos();
 	void setPiece(std::shared_ptr<Piece> p);
+	friend std::ostream &operator<<(std::ostream &output, const Square& s);
 
 private:
 	std::string name;

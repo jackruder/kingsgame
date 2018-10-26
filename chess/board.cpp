@@ -43,42 +43,42 @@ Board::~Board()
 }
 
 
-std::vector<std::shared_ptr<Square>> Board::getSquares() const
+std::vector<Square> Board::getSquares()
 {
 	return squares;
 }
 
-std::vector<std::shared_ptr<Piece>> Board::getPieces() const
+std::vector<std::shared_ptr<Piece>> Board::getPieces()
 {
 	return pieces;
 }
 
-std::shared_ptr<Square> Board::getSquare(Vec2 pos) const // returns square at location
+Square* Board::getSquare(Vec2 loc)// returns square at location
 {
-	return squares[toIndex(pos)];
+
+	return &(squares[toIndex(loc)]);
 }
 
-std::shared_ptr<Square> Board::getSquare(int id) const // returns square at location id
+Square* Board::getSquare(int _id)// returns square at location id
 {
-	return squares[id];
+	return &(squares[_id]);
 }
 
-std::shared_ptr<Piece> Board::getPiece(Pname name) const // returns pointer to piece by enum name
+std::shared_ptr<Piece> Board::getPiece(Pname name) // returns pointer to piece by enum name
 {
 	return pieces[static_cast<int>(name)];
 } 
-std::shared_ptr<Piece> Board::getPiece(int id) const
+std::shared_ptr<Piece> Board::getPiece(int _id)
 {
-	return pieces[id];
+	return pieces[_id];
 }
-std::shared_ptr<Piece> Board::getPiece(Vec2 loc) const
+std::shared_ptr<Piece> Board::getPiece(Vec2 loc)
 {
-	std::shared_ptr<Square> s = getSquare(loc);
-	return s->getPiece();
+	return getSquare(loc)->getPiece();
 }
 
 
-Turn Board::getTurn() const
+Turn Board::getTurn()
 {
 	return turn;
 }
@@ -87,6 +87,7 @@ void Board::genSquares()
 {
 	std::string rows = "12345678";
 	std::string files = "abcdefgh";
+	squares.clear();
 	squares.reserve(64); //allocates memory for std::vector
 	for (int r = 0; r < 8; r++)
 	{
@@ -94,13 +95,13 @@ void Board::genSquares()
 		{
 			std::string c;
 			std::string n{ files[f], rows[r] };  //algebraic notation name
-			if (f + r % 2 == 0)  //if the sum of indicies is even the square is black, otherwise it is white
+			if ((f + r) % 2 == 0)  //if the sum of indicies is even the square is black, otherwise it is white
 				c = "black";
 			else
 				c = "white";
 			Vec2 p = Vec2(f,r); //initializes location 
-			std::shared_ptr<Square> newsquare = std::make_shared<Square>(n, c, p);
-			squares.push_back(newsquare);
+		
+			squares.emplace_back(n, c, p);
 		}
 	}
 }
@@ -111,10 +112,10 @@ void Board::move(std::shared_ptr<Piece> p, Vec2 sq)
 	Vec2 empty(-1, -1);					//initialize an empty location
 	if (sq == empty)
 	{
-		std::shared_ptr<Square> newSquare = getSquare(sq);  //gets the square at the new location passed to move()
+		Square* newSquare = getSquare(sq);  //gets the square at the new location passed to move()
 		if (!(current == empty))									//checks if the piece is on a square
 		{
-			std::shared_ptr<Square> currentSquare = getSquare(current);	//gets the square the piece is on
+			Square* currentSquare = getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
 				newSquare->setPiece(p);	//if no piece, we just set the piece of the new square to the current piece
@@ -146,61 +147,52 @@ void Board::move(std::shared_ptr<Piece> p, Vec2 sq)
 	p->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
-void Board::updatepieces()
-{
-	for (std::shared_ptr<Piece> _p : pieces)
-	{
-		Vec2 pos = _p->getPos();
-		_p->move(pos);
-	}
-}
-
 void Board::genPieces()
 {	
 	pieces.clear();
 	pieces.reserve(32);
-	std::string colors[2] = { "white", "black" };
+	std::vector<std::string> colors = { "white", "black" };
 	int _id = 0;
 	for (std::string c : colors)
 	{
 		char _c = c[0];
 		for (int i = 0; i < 2; i++)
 		{
-			std::string name = _c + "rook" + static_cast<char>(i + 1);
-			std::shared_ptr<Piece> newp = std::make_shared<Rook>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			std::string _name = _c + "rook" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Rook>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		for (int i = 0; i < 2; i++)
 		{
-			std::string name = _c + "bishop" + static_cast<char>(i + 1);
-			std::shared_ptr<Piece> newp = std::make_shared<Bishop>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			std::string _name = _c + "bishop" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Bishop>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		for (int i = 0; i < 2; i++)
 		{
-			std::string name = _c + "knight" + static_cast<char>(i + 1);
-			std::shared_ptr<Piece> newp = std::make_shared<Knight>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			std::string _name = _c + "knight" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Knight>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		{ //scopes to keep same var names
-			std::string name = _c + "king1";
-			std::shared_ptr<Piece> newp = std::make_shared<King>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			std::string _name = _c + "king1";
+			std::shared_ptr<Piece> newp = std::make_shared<King>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		{ 
-			std::string name = _c + "queen1";
-			std::shared_ptr<Piece> newp = std::make_shared<Queen>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			std::string _name = _c + "queen1";
+			std::shared_ptr<Piece> newp = std::make_shared<Queen>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		for (int i = 0; i < 8; i++)
 		{
-			std::string name = _c + "pawn" + static_cast<char>(i + 1);
-			std::shared_ptr<Piece> newp = std::make_shared<Pawn>(c, name, weak_from_this(), _id, Vec2(-1, -1));
+			std::string _name = _c + "pawn" + static_cast<char>(i + 1);
+			std::shared_ptr<Piece> newp = std::make_shared<Pawn>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
@@ -208,12 +200,12 @@ void Board::genPieces()
 }
 void Board::setPosition(std::vector<int> position, Turn t)
 {
+	genSquares();
 	for (int i = 0; i < static_cast<int>(pieces.size()); i++)
 	{
-		pieces[i]->setPos(position[i]);	
+		pieces[i]->move(this, toCoord(position[i]));
+		turn = t;
 	}
-	updatepieces();
-	turn = t;
 }
 void Board::starting() //returns board and pieces to starting position
 {

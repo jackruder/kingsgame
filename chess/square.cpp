@@ -14,22 +14,23 @@ Square::~Square()
 
 //getter functions
 
-std::string Square::getName() const
+std::string Square::getName()
 {
 	return name;
 }
 
-std::string Square::getColor() const
+
+std::string Square::getColor()
 {
 	return color;
 }
 
-Vec2 Square::getPos() const
+Vec2 Square::getPos()
 {
 	return pos;
 }
 
-std::shared_ptr<Piece> Square::getPiece() const
+std::shared_ptr<Piece> Square::getPiece()
 {
 	return piece;
 }
@@ -38,4 +39,10 @@ std::shared_ptr<Piece> Square::getPiece() const
 void Square::setPiece(std::shared_ptr<Piece> p)
 {
 	piece = p;
+}
+
+std::ostream &operator<<(std::ostream &output, const Square& s)
+{
+	output << s.name;
+	return output;
 }
