@@ -14,7 +14,7 @@ public:
 	~Square();
 	std::string getName();
 	std::string getColor();
-	std::shared_ptr<Piece> getPiece();
+	std::shared_ptr<Piece> getPiece() const;
 	Vec2 getPos();
 	void setPiece(std::shared_ptr<Piece> p);
 	friend std::ostream &operator<<(std::ostream &output, const Square& s);

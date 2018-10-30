@@ -25,16 +25,20 @@ public:
 	void setPos(Vec2 p);
 	void setPos(int p);
 	void move(Board* b, Vec2 sq);
+	void move(std::shared_ptr<Board> b, Vec2 sq);
 	friend std::ostream &operator<<(std::ostream &output, const Piece& p);
 	virtual std::vector<Vec2> availablemoves(Board *b) = 0;
+	virtual std::vector<Vec2> availablemoves(std::shared_ptr<Board> b) = 0;
 protected:
 
 	int id;
 	std::string color;
-	std::string name;
+	const std::string piecename;
 	Vec2 pos; // Pieces should be initialized with no location, which will be a nullptr
 	int symb;
-	bool vacant(Board* b, const Vec2& npos);  //checks if a square is allowed, regardless of check, turn, etc,.
+	bool vacant(Board* b, Vec2 npos);  //checks if a square is allowed, regardless of check, turn, etc,.
+	bool vacant(std::shared_ptr<Board> b, Vec2 npos);
 	std::vector<Vec2> ray(Board *b, const std::vector<Vec2>& directions);
+	std::vector<Vec2> ray(std::shared_ptr<Board> b, const std::vector<Vec2>& directions);
 
 };

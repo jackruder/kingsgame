@@ -15,3 +15,8 @@ std::vector<Vec2> Bishop::availablemoves(Board* b)
 {
 	return ray(b, directions);
 }
+
+std::vector<Vec2> Bishop::availablemoves(std::shared_ptr<Board> b)
+{
+	return ray(b, directions);
+}

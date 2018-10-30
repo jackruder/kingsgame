@@ -23,6 +23,10 @@ Vec2& Vec2::operator-=(const Vec2& v) { i -= v.i; j -= v.j; return *this; }
 Vec2& Vec2::operator/=(const Vec2& v) { i /= v.i; j /= v.j; return *this; }
 Vec2& Vec2::operator*=(const Vec2& v) { i *= v.i; j *= v.j; return *this; }
 Vec2& Vec2::operator*=(int n) { i *= n; j *= n; return *this; }
+void Vec2::operator=(const Vec2& v)
+ { 
+	i = v.i; j = v.j;
+}
 bool Vec2::operator==(const Vec2& v) const
 { 
 	if (i == v.i && j == v.j) 

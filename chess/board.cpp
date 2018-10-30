@@ -151,57 +151,57 @@ void Board::genPieces()
 {	
 	pieces.clear();
 	pieces.reserve(32);
-	std::vector<std::string> colors = { "white", "black" };
+	std::vector<std::string> colors = {"white", "black" };
 	int _id = 0;
 	for (std::string c : colors)
 	{
 		char _c = c[0];
 		for (int i = 0; i < 2; i++)
 		{
-			std::string _name = _c + "rook" + static_cast<char>(i + 1);
+			std::string _name(_c + std::string("rook") + std::to_string(i + 1));
 			std::shared_ptr<Piece> newp = std::make_shared<Rook>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		for (int i = 0; i < 2; i++)
 		{
-			std::string _name = _c + "bishop" + static_cast<char>(i + 1);
+			std::string _name(_c + std::string("bishop") + std::to_string(i + 1));
 			std::shared_ptr<Piece> newp = std::make_shared<Bishop>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		for (int i = 0; i < 2; i++)
 		{
-			std::string _name = _c + "knight" + static_cast<char>(i + 1);
+			std::string _name(_c + std::string("knight") + std::to_string(i + 1));
 			std::shared_ptr<Piece> newp = std::make_shared<Knight>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		{ //scopes to keep same var names
-			std::string _name = _c + "king1";
+			std::string _name(_c + std::string("king1"));
 			std::shared_ptr<Piece> newp = std::make_shared<King>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		{ 
-			std::string _name = _c + "queen1";
+			std::string _name(_c + std::string("queen1"));
 			std::shared_ptr<Piece> newp = std::make_shared<Queen>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 		for (int i = 0; i < 8; i++)
 		{
-			std::string _name = _c + "pawn" + static_cast<char>(i + 1);
+			std::string _name(_c + std::string("pawn") + std::to_string(i + 1));
 			std::shared_ptr<Piece> newp = std::make_shared<Pawn>(c, _name, _id, Vec2(-1, -1));
 			pieces.push_back(newp);
 			_id++;
 		}
 	}
 }
-void Board::setPosition(std::vector<int> position, Turn t)
+void Board::setPosition(std::vector<Coord> position, Turn t)
 {
 	genSquares();
-	for (int i = 0; i < static_cast<int>(pieces.size()); i++)
+	for (int i = 0; i < int(pieces.size()); i++)
 	{
 		pieces[i]->move(this, toCoord(position[i]));
 		turn = t;

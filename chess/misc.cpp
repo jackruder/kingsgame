@@ -1,6 +1,9 @@
 #include "misc.h"
 
-std::vector<int> startpos = { 0,7,2,5,1,6,5,4,8,9,10,11,12,13,14,15,56,63,58,61,57,62,60,59,48,49,50,51,52,53,54,55 };
+std::vector<Coord> startpos = { Coord::a1,Coord::h1,Coord::c1,Coord::f1,Coord::b1,Coord::g1,Coord::e1,Coord::d1,
+								Coord::a2,Coord::b2,Coord::c2,Coord::d2,Coord::e2,Coord::f2,Coord::g2,Coord::h2,
+								Coord::a7,Coord::h7,Coord::c7,Coord::f7,Coord::b7,Coord::g7,Coord::e7,Coord::d7,
+								Coord::a8,Coord::b8,Coord::c8,Coord::d8,Coord::e8,Coord::f8,Coord::g8,Coord::h8, };
 int toIndex(Vec2 a)
 {
 	int b = (8 * a[1] + a[0]);
@@ -10,6 +13,17 @@ int toIndex(Vec2 a)
 
 Vec2 toCoord(int i)
 {
+	int a_x = i % 8;  //finds file value
+	int a_y = (i - a_x) / 8; //finds row value
+
+	Vec2 a = Vec2(a_x, a_y);
+
+	return a;
+}
+
+Vec2 toCoord(Coord c)
+{
+	int i = static_cast<int>(c);
 	int a_x = i % 8;  //finds file value
 	int a_y = (i - a_x) / 8; //finds row value
 

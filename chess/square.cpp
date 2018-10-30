@@ -1,5 +1,5 @@
 #include "square.h"
-
+#include "piece.h"
 
 //constructor
 Square::Square(std::string n, std::string c, Vec2 p)
@@ -30,7 +30,7 @@ Vec2 Square::getPos()
 	return pos;
 }
 
-std::shared_ptr<Piece> Square::getPiece()
+std::shared_ptr<Piece> Square::getPiece() const
 {
 	return piece;
 }
@@ -43,6 +43,11 @@ void Square::setPiece(std::shared_ptr<Piece> p)
 
 std::ostream &operator<<(std::ostream &output, const Square& s)
 {
-	output << s.name;
+	std::string p;
+	if (s.getPiece() == nullptr)
+		p = "none";
+	else
+		p = s.getPiece()->getName();
+	output << "Square " << s.name << "- " << p;
 	return output;
 }

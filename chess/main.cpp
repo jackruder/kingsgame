@@ -1,4 +1,5 @@
 #include "board.h"
+#include <windows.h>
 #include <vector>
 #include <iostream>
 int main()
@@ -9,12 +10,11 @@ int main()
 	for (Square& s : _s)
 	{
 		std::cout << s << std::endl;
-		if (s.getPiece() != nullptr)
-		{
-			std::string d = s.getPiece()->getName();
-			std::cout << "Piece: " << d << std::endl;
-		}
+		
 	}
+	std::vector<Vec2> moves = b->getPiece(Pname::wpawn1)->availablemoves(b);
+	for (Vec2 m : moves)
+		std::cout << m << std::endl;
 	int a; 
 	std::cin >> a;
 

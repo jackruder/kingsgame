@@ -36,6 +36,6 @@ public:
 	Square* getSquare(int _id);  //overload for ID (see misc.h)
 	Turn getTurn();
 
-	void setPosition(std::vector<int> position, Turn t); //sets the board to a specific position, see example startpos in misc.h
+	void setPosition(std::vector<Coord> position, Turn t); //sets the board to a specific position, see example startpos in misc.h
 	void starting(); //sets the board to starting position
 };

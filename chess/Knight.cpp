@@ -25,3 +25,17 @@ std::vector<Vec2> Knight::availablemoves(Board* b)
 	return moves;
 }
 
+std::vector<Vec2> Knight::availablemoves(std::shared_ptr<Board> b)
+{
+	std::vector<Vec2> moves;
+	for (int d = 0; d < 8; d++)
+	{
+		Vec2 newpos(directions[d] + pos);
+		if (vacant(b, newpos))
+		{
+			moves.push_back(newpos);
+		}
+	}
+	return moves;
+}
+

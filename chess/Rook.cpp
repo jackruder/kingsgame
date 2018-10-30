@@ -16,3 +16,8 @@ std::vector<Vec2> Rook::availablemoves(Board* b)
 {
 	return ray(b, directions);
 }
+
+std::vector<Vec2> Rook::availablemoves(std::shared_ptr<Board> b)
+{
+	return ray(b, directions);
+}
