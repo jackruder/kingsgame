@@ -2,7 +2,9 @@
 #include <iostream>
 #include "Vec2.h"
 #include <vector>
+#include <map>
 enum class Turn : int { none = 0, white, black };
+
 
 enum class Pname //reorder these to correspond to order of instantiation
 {
@@ -41,6 +43,7 @@ enum class Pname //reorder these to correspond to order of instantiation
 
 };
 
+extern std::vector<std::string> sCoords; 
 enum class Coord
 {
 	a1,b1,c1,d1,e1,f1,g1,h1,
@@ -53,6 +56,8 @@ enum class Coord
 	a8,b8,c8,d8,e8,f8,g8,h8,
 };	 
 
+extern std::map<std::string, Coord> cMap;
+extern std::map<std::string, Pname> pMap;
 extern std::vector<Coord> startpos;
 
 /* We will use integer (int datatype to save memory) indexing of a 2d grid to refer to squares. This is to keep squares close together in memory and to keep things clean.
@@ -68,6 +73,7 @@ extern std::vector<Coord> startpos;
 int toIndex(Vec2 a);  //returns the integer index location
 Vec2 toCoord(int i);  //returns the actual location as a vec2
 Vec2 toCoord(Coord c);
+
 
 bool onBoard(int f, int r); //checks if square is on the board given two int inputs; passed by const reference
 bool onBoard(Vec2 pos); //overload for a vector instead; to be passed by const reference

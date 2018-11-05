@@ -28,7 +28,7 @@ int Piece::getID()
 	return id;
 }
 
-int Piece::getSymb() const
+char Piece::getSymb() const
 {
 	return symb;
 }
@@ -166,6 +166,159 @@ void Piece::move(std::shared_ptr<Board> b, Vec2 sq) {
 	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
+void Piece::move(std::shared_ptr<Board> b, int sq) {
+	int empty = -1;   //initialize an empty location
+	int current = toIndex(pos);
+	if (!(sq == empty))
+	{
+		Square* newSquare = b->getSquare(sq);  //gets the square at the new location passed to move()              
+		if (!(current == empty))									//checks if the piece is on a square
+		{
+			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
+			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
+			}
+			else												//if there is a piece
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
+			}
+		}
+		else                                                 //if the piece is not on a square
+		{
+			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
+			}
+			else												//if yes,
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
+
+			}
+		}
+	}
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
+}
+
+void Piece::move(std::shared_ptr<Board> b, Coord coor) {
+	int sq = static_cast<int>(coor);
+	int empty = -1;   //initialize an empty location
+	int current = toIndex(pos);
+	if (!(sq == empty))
+	{
+		Square* newSquare = b->getSquare(sq);  //gets the square at the new location passed to move()              
+		if (!(current == empty))									//checks if the piece is on a square
+		{
+			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
+			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
+			}
+			else												//if there is a piece
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
+			}
+		}
+		else                                                 //if the piece is not on a square
+		{
+			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
+			}
+			else												//if yes,
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
+
+			}
+		}
+	}
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
+}
+
+void Piece::move(Board* b, int sq) {
+	int empty = -1;   //initialize an empty location
+	int current = toIndex(pos);
+	if (!(sq == empty))
+	{
+		Square* newSquare = b->getSquare(sq);  //gets the square at the new location passed to move()              
+		if (!(current == empty))									//checks if the piece is on a square
+		{
+			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
+			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
+			}
+			else												//if there is a piece
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
+			}
+		}
+		else                                                 //if the piece is not on a square
+		{
+			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
+			}
+			else												//if yes,
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
+
+			}
+		}
+	}
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
+}
+
+void Piece::move(Board* b, Coord coor) {
+	int sq = static_cast<int>(coor);
+	int empty = -1;   //initialize an empty location
+	int current = toIndex(pos);
+	if (!(sq == empty))
+	{
+		Square* newSquare = b->getSquare(sq);  //gets the square at the new location passed to move()              
+		if (!(current == empty))									//checks if the piece is on a square
+		{
+			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
+			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
+			}
+			else												//if there is a piece
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
+				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
+			}
+		}
+		else                                                 //if the piece is not on a square
+		{
+			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
+			{
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
+			}
+			else												//if yes,
+			{
+				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
+
+			}
+		}
+	}
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
+}
 
 std::vector<Vec2> Piece::ray(Board* b, const std::vector<Vec2>& directions)
 {

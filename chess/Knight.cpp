@@ -5,6 +5,7 @@
 Knight::Knight(std::string c, std::string n, int _id, Vec2 loc)
 	:directions({ Vec2(-2, -1), Vec2(-2, 1), Vec2(1, -2), Vec2(1, 2), Vec2(-1, -2), Vec2(-1, 2), Vec2(2, 1), Vec2(2, -1) }), Piece(c, n, _id, loc)
 {
+	symb = c == "white" ? 'N' : 'n';
 }
 
 Knight::~Knight()

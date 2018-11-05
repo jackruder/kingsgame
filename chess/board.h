@@ -19,6 +19,8 @@ private:
 	std::vector<Square> squares; //  2d container of squares
 	void genPieces();
 
+	void setTurn(Turn t);
+
 public:
 
 	Board();
@@ -38,4 +40,7 @@ public:
 
 	void setPosition(std::vector<Coord> position, Turn t); //sets the board to a specific position, see example startpos in misc.h
 	void starting(); //sets the board to starting position
+
+	void printBoard();	
+	void printLine(int iLine, int iColor1, int iColor2);
 };

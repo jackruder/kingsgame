@@ -8,6 +8,8 @@
 #include "Knight.h"
 #include "Queen.h"
 #include "King.h"
+#define WHITE_SQUARE 0xDB
+#define BLACK_SQUARE 0xFF
 Board::Board()
 	:	turn(Turn::none)
 {
@@ -19,7 +21,7 @@ Board::Board()
 
 
 
-/*Board Board::operator=(const Board& b)
+Board Board::operator=(const Board& b)
 {
 	turn = b.getTurn();
 	const std::vector<std::shared_ptr<Piece>>& oldpieces = b.getPieces();
@@ -29,14 +31,14 @@ Board::Board()
 	for (int i = 0; i < s; i++)
 	{
 		std::shared_ptr<Piece> oldp = oldpieces[i];
-		std::shared_ptr<Piece> newp = std::make_shared<WTF>(*oldp);
+		
 		pieces.push_back(newp);
 	}
 	genSquares(squares);
 	updatepieces();
 
 
-}*/
+}
 
 Board::~Board()
 { 
@@ -198,6 +200,12 @@ void Board::genPieces()
 		}
 	}
 }
+
+void Board::setTurn(Turn t)
+{
+	turn = t;
+}
+
 void Board::setPosition(std::vector<Coord> position, Turn t)
 {
 	genSquares();
@@ -209,5 +217,89 @@ void Board::setPosition(std::vector<Coord> position, Turn t)
 }
 void Board::starting() //returns board and pieces to starting position
 {
+	genSquares();
+	genPieces();
 	setPosition(startpos, Turn::white);
 }
+
+void Board::printBoard()
+{
+	std::cout << "   A     B     C     D     E     F     G     H\n\n";
+
+	for (int iLine = 7; iLine >= 0; iLine--)
+	{
+		if (iLine % 2 == 0)
+		{
+			// Line starting with BLACK
+			printLine(iLine, BLACK_SQUARE, WHITE_SQUARE);
+		}
+
+		else
+		{
+			// Line starting with WHITE
+			printLine(iLine, WHITE_SQUARE, BLACK_SQUARE);
+		}
+	}
+}
+
+void Board::printLine(int iLine, int iColor1, int iColor2)
+{
+	// Define the CELL variable here. 
+	// It represents how many horizontal characters will form one square
+	// The number of vertical characters will be CELL/2
+	// You can change it to alter the size of the board 
+	// (an odd number will make the squares look rectangular)
+	int SIZE = 1; // 1 through 4
+	int cell = 2 + 4 * SIZE;
+	int mCol = cell / 2;
+	int mLine = (mCol - 1) / 2;
+	// Since the width of the characters BLACK and WHITE is half of the height, 
+	// we need to use two characters in a row.
+	// So if we have CELL characters, we must have CELL/2 sublines
+	for (int subLine = 0; subLine < cell / 2; subLine++)
+	{
+		// A sub-line is consisted of 8 cells, but we can group it
+		// in 4 iPairs of black&white
+		for (int iPair = 0; iPair < 4; iPair++)
+		{
+			// First cell of the pair
+			for (int subColumn = 0; subColumn < cell; subColumn++)
+			{
+				// The piece should be in the "middle" of the cell
+				// For 3 sub-lines, in sub-line 1
+				// For 6 sub-columns, sub-column 3
+				if (subLine == mLine && subColumn == mCol)
+				{
+					std::cout << char(getPiece(Vec2(iPair * 2, iLine)) != nullptr ?
+						getPiece(Vec2(iPair * 2, iLine))->getSymb() : iColor1);
+				}
+				else
+				{
+					std::cout << char(iColor1);
+				}
+			}
+
+			// Second cell of the pair
+			for (int subColumn = 0; subColumn < cell; subColumn++)
+			{
+				// The piece should be in the "middle" of the cell
+				// For 3 sub-lines, in sub-line 1
+				// For 6 sub-columns, sub-column 3
+				if (subLine == mLine && subColumn == mCol)
+				{
+					std::cout << char(getPiece(Vec2(iPair * 2 + 1, iLine)) != nullptr ?
+						getPiece(Vec2(iPair * 2 + 1, iLine))->getSymb() : iColor2);
+				}
+				else
+				{
+					std::cout << char(iColor2);
+				}
+				if (iPair == 3 && subColumn == (cell - 1) && subLine == mLine)
+					std::cout << "   " << std::to_string(iLine + 1);
+			}
+
+		}
+		std::cout << std::endl;
+	}
+}
+

@@ -4,6 +4,7 @@
 Pawn::Pawn(std::string c, std::string n, int _id, Vec2 loc)
 	:Piece(c, n, _id, loc)
 {
+	symb = c == "white" ? 'P' : 'p';
 }
 
 Pawn::~Pawn()
