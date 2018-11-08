@@ -13,12 +13,12 @@ class Piece
 {
 public:
 
-	Piece(std::string c, std::string n, int i, Vec2 loc); 
+	Piece(Color c, std::string n, int i, Vec2 loc); 
 
 	~Piece();
 	int getID();
 	char getSymb() const;
-	std::string getColor() const;
+	Color getColor() const;
 	std::string getName() const;
 
 	Vec2 getPos();
@@ -36,7 +36,7 @@ public:
 protected:
 
 	int id;
-	std::string color;
+	Color color;
 	const std::string piecename;
 	Vec2 pos; // Pieces should be initialized with no location, which will be a nullptr
 	char symb;

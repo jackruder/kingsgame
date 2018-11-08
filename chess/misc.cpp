@@ -1,6 +1,7 @@
 #include "misc.h"
 
-extern std::vector<std::string> sCoords = {
+
+	extern std::vector<std::string> sCoords = {
 	"a1","b1","c1","d1","e1","f1","g1","h1",
 	"a2","b2","c2","d2","e2","f2","g2","h2",
 	"a3","b3","c3","d3","e3","f3","g3","h3",
@@ -65,12 +66,16 @@ std::map<std::string, Pname> pMap = {
 
 int toIndex(Vec2 a)
 {
-	int b = (8 * a[1] + a[0]);
-	return b;
+	return  (8 * a[1] + a[0]);
 }
 
+Coord toCoord(Vec2 a)
+{
+	int b = (8 * a[1] + a[0]);
+	return static_cast<Coord>(b);
+}
 
-Vec2 toCoord(int i)
+Vec2 toVec(int i)
 {
 	int a_x = i % 8;  //finds file value
 	int a_y = (i - a_x) / 8; //finds row value
@@ -80,7 +85,7 @@ Vec2 toCoord(int i)
 	return a;
 }
 
-Vec2 toCoord(Coord c)
+Vec2 toVec(Coord c)
 {
 	int i = static_cast<int>(c);
 	int a_x = i % 8;  //finds file value

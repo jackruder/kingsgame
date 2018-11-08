@@ -2,10 +2,10 @@
 
 
 
-Bishop::Bishop(std::string c, std::string n, int _id, Vec2 loc)
+Bishop::Bishop(Color c, std::string n, int _id, Vec2 loc)
 	:directions({ Vec2(-1, -1), Vec2(-1, 1), Vec2(1, -1), Vec2(1, 1) }), Piece(c,n, _id, loc)
 {
-	symb = c == "white" ? 'B' : 'b';
+	symb = c == Color::white ? 'B' : 'b';
 }
 
 Bishop::~Bishop()

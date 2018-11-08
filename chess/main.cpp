@@ -29,6 +29,7 @@ int main()
 			bool isPname = false;
 			bool canMove = false;
 			bool validMove = false;
+			std::shared_ptr<Piece> p;
 			while (!canMove)
 			{
 				std::cout << "Enter a Piece/Square or (c)ancel:";
@@ -37,12 +38,16 @@ int main()
 				isCoord = cMap.find(name) != cMap.end();
 				if (isPname) //if valid piecename
 				{
-					moves = b->getPiece(pMap[name])->availablemoves(b);
+					p = b->getPiece(pMap[name]);
+						moves = p->availablemoves(b);
 				}
 				else if (isCoord) {  //if valid algebraic square name
-					
-					moves = b->getSquare(static_cast<int>(cMap[name]))->getPiece()->availablemoves(b);
-				}
+				
+					p = b->getSquare(static_cast<int>(cMap[name]))->getPiece();
+					if (!(p == nullptr))
+						moves = p->availablemoves(b);
+	
+				} 
 				else if (name == "c")
 				{
 					canMove = true;  //skips while loops
@@ -80,18 +85,16 @@ int main()
 				std::string smove;
 				std::cin >> smove;
 				Coord move = cMap[smove];
-				if (std::find(moves.begin(), moves.end(), toCoord(move)) != moves.end())
+				if (std::find(moves.begin(), moves.end(), toVec(move)) != moves.end())
 				{
-					if (isCoord)
-					{
-						b->getSquare(static_cast<int>(cMap[name]))->getPiece()->move(b, move);
+						p->move(b, move);
+						b->nextTurn();
+						std::cout << "Looking to see if " << (b->getTurn() == Color::white ? "white" : "black") << " is in check";			
+						if (b->inCheck(b->getTurn()) == true)
+						{
+							std::cout << "Check, enter a char to continue" << std::endl;
+						}
 						validMove = true;
-					}
-					else if (isPname)
-					{
-						b->getPiece(pMap[name])->move(b, move);
-						validMove = true;
-					}
 
 				}
 				else if (smove == "c")

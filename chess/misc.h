@@ -3,7 +3,8 @@
 #include "Vec2.h"
 #include <vector>
 #include <map>
-enum class Turn : int { none = 0, white, black };
+
+enum class Color : int { white, black };
 
 
 enum class Pname //reorder these to correspond to order of instantiation
@@ -67,13 +68,13 @@ extern std::vector<Coord> startpos;
 	| 0 = (0,0) 1 = (1,0) |
 	
 	
-	toIndex and toCoord implement this functionality for a 8x8 board
+	toIndex and toVec implement this functionality for a 8x8 board
 	*/
 
 int toIndex(Vec2 a);  //returns the integer index location
-Vec2 toCoord(int i);  //returns the actual location as a vec2
-Vec2 toCoord(Coord c);
-
+Vec2 toVec(int i);  //returns the actual location as a vec2
+Vec2 toVec(Coord c);
+Coord toCoord(Vec2 a);
 
 bool onBoard(int f, int r); //checks if square is on the board given two int inputs; passed by const reference
 bool onBoard(Vec2 pos); //overload for a vector instead; to be passed by const reference

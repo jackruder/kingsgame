@@ -11,33 +11,24 @@
 #define WHITE_SQUARE 0xDB
 #define BLACK_SQUARE 0xFF
 Board::Board()
-	:	turn(Turn::none)
+	:	turn(Color::white)
 {
 	//instantiate squares then pieces
 	genSquares();
 	genPieces();
+}
 
+Board::Board(const Board& b)
+{
+	genPieces();
+	setPosition(b.getPosition(), b.getTurn());
 }
 
 
-
-Board Board::operator=(const Board& b)
+Board& Board::operator=(const Board& b)
 {
-	turn = b.getTurn();
-	const std::vector<std::shared_ptr<Piece>>& oldpieces = b.getPieces();
-	int s = oldpieces.size();
-	pieces.clear();
-	pieces.reserve(s);
-	for (int i = 0; i < s; i++)
-	{
-		std::shared_ptr<Piece> oldp = oldpieces[i];
-		
-		pieces.push_back(newp);
-	}
-	genSquares(squares);
-	updatepieces();
-
-
+	setPosition(b.getPosition(), b.getTurn());
+	return *this;
 }
 
 Board::~Board()
@@ -45,28 +36,28 @@ Board::~Board()
 }
 
 
-std::vector<Square> Board::getSquares()
+std::vector<Square> Board::getSquares() const
 {
 	return squares;
 }
 
-std::vector<std::shared_ptr<Piece>> Board::getPieces()
+std::vector<std::shared_ptr<Piece>> Board::getPieces() const
 {
 	return pieces;
 }
 
-Square* Board::getSquare(Vec2 loc)// returns square at location
+Square* Board::getSquare(Vec2 loc) // returns square at location 
 {
 
 	return &(squares[toIndex(loc)]);
 }
 
-Square* Board::getSquare(int _id)// returns square at location id
+Square* Board::getSquare(int _id) // returns square at location id
 {
 	return &(squares[_id]);
 }
 
-std::shared_ptr<Piece> Board::getPiece(Pname name) // returns pointer to piece by enum name
+std::shared_ptr<Piece> Board::getPiece(Pname name)// returns pointer to piece by enum name
 {
 	return pieces[static_cast<int>(name)];
 } 
@@ -80,7 +71,7 @@ std::shared_ptr<Piece> Board::getPiece(Vec2 loc)
 }
 
 
-Turn Board::getTurn()
+Color Board::getTurn() const
 {
 	return turn;
 }
@@ -153,11 +144,12 @@ void Board::genPieces()
 {	
 	pieces.clear();
 	pieces.reserve(32);
-	std::vector<std::string> colors = {"white", "black" };
+	char colors[2] = {'w', 'b' };
 	int _id = 0;
-	for (std::string c : colors)
+	for (int k = 0; k < 2; k++)
 	{
-		char _c = c[0];
+		Color c = static_cast<Color>(k);
+		char _c = colors[k];
 		for (int i = 0; i < 2; i++)
 		{
 			std::string _name(_c + std::string("rook") + std::to_string(i + 1));
@@ -201,56 +193,86 @@ void Board::genPieces()
 	}
 }
 
-void Board::setTurn(Turn t)
+void Board::setTurn(Color t)
 {
 	turn = t;
 }
 
-void Board::setPosition(std::vector<Coord> position, Turn t)
+std::vector<Coord> Board::getPosition() const
 {
+	std::vector<Coord> position;
+	position.reserve(32);
+	for (std::shared_ptr<Piece> p : pieces)
+	{
+		position.push_back(toCoord(p->getPos()));
+	}
+	return position;
+}
+
+void Board::setPosition(std::vector<Coord> position, Color t)
+{
+	turn = t;
 	genSquares();
 	for (int i = 0; i < int(pieces.size()); i++)
 	{
-		pieces[i]->move(this, toCoord(position[i]));
-		turn = t;
+		pieces[i]->move(this, toVec(position[i]));	
 	}
 }
 void Board::starting() //returns board and pieces to starting position
 {
 	genSquares();
 	genPieces();
-	setPosition(startpos, Turn::white);
+	setPosition(startpos, Color::white);
 }
 
 void Board::printBoard()
 {
-	std::cout << "   A     B     C     D     E     F     G     H\n\n";
+	int SIZE = 2; // 1 through 4
+	int cell = 2 + 4 * SIZE;
+	std::string header;
+	std::string fnames = "ABCDEFGH";
+	for (int i = 0; i < 7; i++)
+	{		
+		for (int s = 0; s < (cell / 2); s++)
+		{
+			header += ' ';
+		}
+		header += fnames[i];
+		for (int s = 0; s < (cell / 2) - 1; s++)
+		{
+			header += ' ';
+		}
+	}
+	for (int s = 0; s < (cell / 2); s++)
+	{
+		header += ' ';
+	}
+	header += "H\n\n";
+	std::cout << header;
 
 	for (int iLine = 7; iLine >= 0; iLine--)
 	{
 		if (iLine % 2 == 0)
 		{
 			// Line starting with BLACK
-			printLine(iLine, BLACK_SQUARE, WHITE_SQUARE);
+			printLine(iLine, BLACK_SQUARE, WHITE_SQUARE, cell);
 		}
 
 		else
 		{
 			// Line starting with WHITE
-			printLine(iLine, WHITE_SQUARE, BLACK_SQUARE);
+			printLine(iLine, WHITE_SQUARE, BLACK_SQUARE, cell);
 		}
 	}
 }
 
-void Board::printLine(int iLine, int iColor1, int iColor2)
+void Board::printLine(int iLine, int iColor1, int iColor2, int cell)
 {
 	// Define the CELL variable here. 
 	// It represents how many horizontal characters will form one square
 	// The number of vertical characters will be CELL/2
 	// You can change it to alter the size of the board 
 	// (an odd number will make the squares look rectangular)
-	int SIZE = 1; // 1 through 4
-	int cell = 2 + 4 * SIZE;
 	int mCol = cell / 2;
 	int mLine = (mCol - 1) / 2;
 	// Since the width of the characters BLACK and WHITE is half of the height, 
@@ -303,3 +325,43 @@ void Board::printLine(int iLine, int iColor1, int iColor2)
 	}
 }
 
+void Board::updateSquares()
+{
+	for (std::shared_ptr<Piece> p : pieces)
+	{
+		p->move(this, p->getPos());
+	}
+}
+
+bool Board::inCheck(Color c)
+{
+	int first;
+	int king;
+	if (c == Color::white)
+	{
+		first = 16;
+		king = 6;
+	}
+	else
+	{
+		first = 0;
+		king = 22;
+	}
+	Vec2 kpos = pieces[king]->getPos();
+	for (int i = first; i < (first + 16); i++)
+	{
+		std::shared_ptr<Piece> p = pieces[i];
+		std::vector<Vec2> moves = p->availablemoves(this);
+		for (Vec2 m : moves)
+		{
+			if (m == kpos)
+				return true;
+		}
+	}
+	return false;
+}
+
+void Board::nextTurn()
+{
+	turn = (turn == Color::white ? Color::black : Color::white);
+}

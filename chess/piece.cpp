@@ -2,7 +2,7 @@
 
 
 //constructor
-Piece::Piece(std::string c, std::string n, int i, Vec2 loc)
+Piece::Piece(Color c, std::string n, int i, Vec2 loc)
 	: color(c), piecename(n), id(i), pos(loc)
 {
 
@@ -18,7 +18,7 @@ std::string Piece::getName() const
 	return piecename;
 }
 
-std::string Piece::getColor() const
+Color Piece::getColor() const
 {
 	return color;
 }
@@ -44,7 +44,7 @@ void Piece::setPos(Vec2 p)
 }
 void Piece::setPos(int p)
 {
-	pos = toCoord(p);
+	pos = toVec(p);
 }
 
 std::ostream &operator<<(std::ostream &output, const Piece& p)
@@ -367,4 +367,3 @@ std::vector<Vec2> Piece::ray(std::shared_ptr<Board> b, const std::vector<Vec2>& 
 	}
 	return results;
 }
-

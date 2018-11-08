@@ -1,10 +1,10 @@
 #include "Pawn.h"
 
 
-Pawn::Pawn(std::string c, std::string n, int _id, Vec2 loc)
+Pawn::Pawn(Color c, std::string n, int _id, Vec2 loc)
 	:Piece(c, n, _id, loc)
 {
-	symb = c == "white" ? 'P' : 'p';
+	symb = c == Color::white ? 'P' : 'p';
 }
 
 Pawn::~Pawn()
@@ -16,7 +16,7 @@ std::vector<Vec2> Pawn::availablemoves(Board* b)
 	std::vector<Vec2> moves;
 	int t;
 	Vec2 d;
-	if (color == "white")
+	if (color == Color::white)
 	{
 		t = 1;
 		Vec2 d(0, 1);
@@ -57,7 +57,7 @@ std::vector<Vec2> Pawn::availablemoves(std::shared_ptr<Board> b)
 	std::vector<Vec2> moves;
 	int t;
 	Vec2 d;
-	if (color == "white")
+	if (color == Color::white)
 	{
 		t = 1;
 		d = Vec2(0, 1);
@@ -92,3 +92,4 @@ std::vector<Vec2> Pawn::availablemoves(std::shared_ptr<Board> b)
 		}
 	return moves;
 }
+
