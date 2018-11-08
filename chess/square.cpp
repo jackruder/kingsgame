@@ -1,6 +1,6 @@
 #include "square.h"
+#include "Vec2.h"
 #include "piece.h"
-
 //constructor
 Square::Square(std::string n, std::string c, Vec2 p)
 	:name(n), color(c), pos(p), piece(nullptr)

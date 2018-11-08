@@ -1,7 +1,10 @@
 #include "board.h"
+#include "square.h"
+#include "piece.h"
 #include <windows.h>
 #include <vector>
 #include <iostream>
+
 int main()
 {
 	std::shared_ptr<Board> b = std::make_shared<Board>();
@@ -127,4 +130,3 @@ int main()
 	return 0;
 
 }
-

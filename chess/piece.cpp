@@ -1,5 +1,6 @@
 #include "piece.h" 
-
+#include "board.h"
+#include "square.h"
 
 //constructor
 Piece::Piece(Color c, std::string n, int i, Vec2 loc)

@@ -1,12 +1,11 @@
 #pragma once
-#include <iostream>
+#include <iosfwd>
 #include <memory>
 #include <vector>
 #include <string>
-#include "square.h"
 #include "misc.h"
-#include "piece.h"
 
+class Square;
 class Piece;
 
 class Board

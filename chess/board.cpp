@@ -1,6 +1,6 @@
 #include "board.h"
-#include <typeinfo>
-#include <string>
+#include "square.h"
+#include <iostream>
 #include "piece.h"
 #include "Rook.h"
 #include "Pawn.h"
@@ -8,6 +8,7 @@
 #include "Knight.h"
 #include "Queen.h"
 #include "King.h"
+
 #define WHITE_SQUARE 0xDB
 #define BLACK_SQUARE 0xFF
 Board::Board()
@@ -363,5 +364,5 @@ bool Board::inCheck(Color c)
 
 void Board::nextTurn()
 {
-	turn = (turn == Color::white ? Color::black : Color::white);
+	turn = ( turn == Color::white ? Color::black : Color::white );
 }

@@ -1,5 +1,5 @@
 #include "Pawn.h"
-
+#include "board.h"
 
 Pawn::Pawn(Color c, std::string n, int _id, Vec2 loc)
 	:Piece(c, n, _id, loc)

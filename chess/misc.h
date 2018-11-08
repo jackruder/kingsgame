@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <iostream>
+#include <iosfwd>
 #include "Vec2.h"
 #include <vector>
 #include <map>

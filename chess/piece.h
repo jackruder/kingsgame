@@ -1,10 +1,9 @@
 #pragma once
-#include <iostream> 
+#include <iosfwd> 
 #include <vector>
 #include <memory>
 #include "misc.h"
 #include "Vec2.h"
-#include "board.h"
 #include <string>
 class Board;
 
