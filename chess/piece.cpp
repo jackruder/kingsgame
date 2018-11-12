@@ -368,3 +368,37 @@ std::vector<Vec2> Piece::ray(std::shared_ptr<Board> b, const std::vector<Vec2>& 
 	}
 	return results;
 }
+
+std::vector<Vec2> Piece::legalMoves(Board* b)
+{
+	std::vector<Vec2> moves;
+	std::vector<Vec2> available = availablemoves(b);
+	for (Vec2 m : available)
+	{
+		Board future(*b);
+		std::shared_ptr<Piece> futureSelf = future.getPiece(id);
+		futureSelf->move(&future, m);
+		if (!(future.inCheck(future.getTurn())))
+		{
+			moves.push_back(m);
+		}
+	}
+	return moves;
+}
+
+std::vector<Vec2> Piece::legalMoves(std::shared_ptr<Board> b)
+{
+	std::vector<Vec2> moves;
+	std::vector<Vec2> available = availablemoves(b);
+	for (Vec2 m : available)
+	{
+		Board future(*b);
+		std::shared_ptr<Piece> futureSelf = future.getPiece(id);
+		futureSelf->move(&future, m);
+		if (!(future.inCheck(future.getTurn())))
+		{
+			moves.push_back(m);
+		}
+	}
+	return moves;
+}

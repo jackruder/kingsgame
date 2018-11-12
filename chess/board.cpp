@@ -362,6 +362,8 @@ bool Board::inCheck(Color c)
 	return false;
 }
 
+
+
 void Board::nextTurn()
 {
 	turn = ( turn == Color::white ? Color::black : Color::white );

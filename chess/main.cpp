@@ -42,13 +42,13 @@ int main()
 				if (isPname) //if valid piecename
 				{
 					p = b->getPiece(pMap[name]);
-						moves = p->availablemoves(b);
+						moves = p->legalMoves(b);
 				}
 				else if (isCoord) {  //if valid algebraic square name
 				
 					p = b->getSquare(static_cast<int>(cMap[name]))->getPiece();
 					if (!(p == nullptr))
-						moves = p->availablemoves(b);
+						moves = p->legalMoves(b);
 	
 				} 
 				else if (name == "c")

@@ -30,8 +30,9 @@ public:
 	void move(Board * b, int sq);
 	void move(Board * b, Coord coor);
 	friend std::ostream &operator<<(std::ostream &output, const Piece& p);
-	virtual std::vector<Vec2> availablemoves(Board *b) = 0;
-	virtual std::vector<Vec2> availablemoves(std::shared_ptr<Board> b) = 0;
+	std::vector<Vec2> legalMoves(Board * b);
+	std::vector<Vec2> legalMoves(std::shared_ptr<Board> b);
+	
 protected:
 
 	int id;
@@ -43,5 +44,8 @@ protected:
 	bool vacant(std::shared_ptr<Board> b, Vec2 npos);
 	std::vector<Vec2> ray(Board *b, const std::vector<Vec2>& directions);
 	std::vector<Vec2> ray(std::shared_ptr<Board> b, const std::vector<Vec2>& directions);
+	virtual std::vector<Vec2> availablemoves(Board *b) = 0;
+	virtual std::vector<Vec2> availablemoves(std::shared_ptr<Board> b) = 0;
+	
 
 };

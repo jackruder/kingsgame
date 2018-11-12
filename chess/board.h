@@ -47,5 +47,9 @@ public:
 	void updateSquares();
 	
 	bool inCheck(Color c);
+	bool checkmate();
+
+	std::vector<std::vector<Coord>> allMoves();
 	void nextTurn();
+
 };
