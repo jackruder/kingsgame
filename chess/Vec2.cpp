@@ -7,6 +7,10 @@ Vec2::Vec2(int _i, int _j)
 {
 }
 
+Vec2::Vec2(const Vec2& v)
+	:i(v.i), j(v.j)
+{
+}
 
 Vec2::~Vec2()
 {
@@ -23,9 +27,9 @@ Vec2& Vec2::operator-=(const Vec2& v) { i -= v.i; j -= v.j; return *this; }
 Vec2& Vec2::operator/=(const Vec2& v) { i /= v.i; j /= v.j; return *this; }
 Vec2& Vec2::operator*=(const Vec2& v) { i *= v.i; j *= v.j; return *this; }
 Vec2& Vec2::operator*=(int n) { i *= n; j *= n; return *this; }
-void Vec2::operator=(const Vec2& v)
+Vec2& Vec2::operator=(const Vec2& v)
  { 
-	i = v.i; j = v.j;
+	i = v.i; j = v.j; return *this;
 }
 bool Vec2::operator==(const Vec2& v) const
 { 

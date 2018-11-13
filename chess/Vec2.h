@@ -7,7 +7,9 @@ public:
 	int j;
 	Vec2();
 	Vec2(int _i, int _j);
+	Vec2(const Vec2 & v);
 	~Vec2();
+
 	Vec2 operator+(const Vec2& v) const;
 	Vec2 operator-(const Vec2& v) const;
 	Vec2 operator*(const Vec2& v) const;
@@ -18,7 +20,7 @@ public:
 	Vec2& operator*=(const Vec2& v);
 	Vec2& operator*=(int n);
 	Vec2& operator/=(const Vec2& v);
-	void operator=(const Vec2& v);
+	Vec2& operator=(const Vec2& v);
 	bool operator==(const Vec2& v) const;
 	bool operator!=(const Vec2 & v) const;
 

@@ -17,7 +17,7 @@ private:
 	std::vector<std::shared_ptr<Piece>> pieces; // container of pointers to pieces
 	std::vector<Square> squares; //  2d container of squares
 	void genPieces();
-
+	std::string moved2;
 	void setTurn(Color t);
 
 public:
@@ -32,7 +32,8 @@ public:
 	std::shared_ptr<Piece> getPiece(Pname name);// returns pointer to piece given enum name, vec location, or int ID
 	std::shared_ptr<Piece> getPiece(int _id);  // overload for ID (see misc.h)
 	std::shared_ptr<Piece> getPiece(Vec2 loc);  //overload for loc
-	void move(std::shared_ptr<Piece> p, Vec2 sq); //moves a piece at pointer p to std::vector location sq, making sure to update all pieces and squares involved
+	std::string getMoved2() const;
+	void setMoved2(std::string p);
 	Square* getSquare(Vec2 loc); // returns reference to square at location -- takes std::vector or pos.  reference returned since we don't want a square copy
 	Square* getSquare(int _id);  //overload for ID (see misc.h)
 	Color getTurn() const;

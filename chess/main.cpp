@@ -71,7 +71,7 @@ int main()
 
 				if (moves.size() != 0)
 				{
-					std::cout << "Available Moves (excluding check and en passant) :";
+					std::cout << "Available Moves (excluding promotion) :";
 					for (Vec2 m : moves)
 						std::cout << sCoords[toIndex(m)] << ", ";
 					canMove = true;

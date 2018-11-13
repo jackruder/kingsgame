@@ -20,22 +20,43 @@ Board::Board()
 }
 
 Board::Board(const Board& b)
+	: turn(b.getTurn()), moved2(b.getMoved2()), squares(b.getSquares())
 {
-	genPieces();
-	setPosition(b.getPosition(), b.getTurn());
+	genSquares();
+	std::vector<std::shared_ptr<Piece>> oldPieces = b.getPieces();
+	pieces.reserve(32);
+	for (std::shared_ptr<Piece> oldp : oldPieces)
+	{
+		std::shared_ptr<Piece> p = oldp->clone();
+		squares[toIndex(p->getPos())].setPiece(p);
+		pieces.push_back(p);
+	}
+	
+	
+
 }
 
 
 Board& Board::operator=(const Board& b)
 {
-	setPosition(b.getPosition(), b.getTurn());
+	std::vector<std::shared_ptr<Piece>> oldPieces = b.getPieces();
+	pieces.clear();
+	pieces.reserve(32);
+	genSquares();
+	for (std::shared_ptr<Piece> oldp : oldPieces)
+	{
+		std::shared_ptr<Piece> p = oldp->clone();
+		squares[toIndex(p->getPos())].setPiece(p);
+		pieces.push_back(p);
+	}
+	turn = b.getTurn();
+	moved2 = b.getMoved2();
 	return *this;
 }
 
 Board::~Board()
 { 
 }
-
 
 std::vector<Square> Board::getSquares() const
 {
@@ -71,6 +92,13 @@ std::shared_ptr<Piece> Board::getPiece(Vec2 loc)
 	return getSquare(loc)->getPiece();
 }
 
+std::string Board::getMoved2() const {
+	return moved2;
+}
+
+void Board::setMoved2(std::string p) {
+	moved2 = p;
+}
 
 Color Board::getTurn() const
 {
@@ -100,46 +128,7 @@ void Board::genSquares()
 	}
 }
 
-void Board::move(std::shared_ptr<Piece> p, Vec2 sq)
-{
-	Vec2 current = p->getPos();
-	Vec2 empty(-1, -1);					//initialize an empty location
-	if (sq == empty)
-	{
-		Square* newSquare = getSquare(sq);  //gets the square at the new location passed to move()
-		if (!(current == empty))									//checks if the piece is on a square
-		{
-			Square* currentSquare = getSquare(current);	//gets the square the piece is on
-			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
-			{
-				newSquare->setPiece(p);	//if no piece, we just set the piece of the new square to the current piece
-				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
-			}
-			else												//if there is a piece
-			{
-				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(p);	//sets the piece of the new square to the current piece
-				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
-			}
-		}
-		else                                                 //if the piece is not on a square
-		{
-			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
-			{
-				newSquare->setPiece(p); // if no, sets the piece of the new square to the current piece
-			}
-			else												//if yes,
-			{
-				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(p);  //sets the piece of the new square to the current piece
 
-			}
-
-		}
-	}
-	
-	p->setPos(sq); //sets the locaiton of the current piece to the new location
-}
 
 void Board::genPieces()
 {	
@@ -210,11 +199,11 @@ std::vector<Coord> Board::getPosition() const
 	return position;
 }
 
-void Board::setPosition(std::vector<Coord> position, Color t)
+void Board::setPosition(std::vector<Coord> position, Color t) //this function wont work after promotion
 {
 	turn = t;
 	genSquares();
-	for (int i = 0; i < int(pieces.size()); i++)
+	for (int i = 0; i < int(pieces.size()); i++) 
 	{
 		pieces[i]->move(this, toVec(position[i]));	
 	}
@@ -362,9 +351,22 @@ bool Board::inCheck(Color c)
 	return false;
 }
 
-
-
 void Board::nextTurn()
 {
-	turn = ( turn == Color::white ? Color::black : Color::white );
+	if (turn == Color::white)
+	{
+		if (moved2[0] == 'b')
+			moved2 = "none";
+		turn = Color::black;
+	}
+	else
+	{
+		if (moved2[0] == 'w')
+			moved2 = "none";
+		turn = Color::white;
+	}
+	
+
 }
+
+

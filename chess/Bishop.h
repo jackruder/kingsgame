@@ -8,6 +8,6 @@ public:
 	~Bishop();
 	std::vector<Vec2> availablemoves(Board* b);
 	std::vector<Vec2> availablemoves(std::shared_ptr<Board> b);
-
+	std::shared_ptr<Piece> clone();
 };
 

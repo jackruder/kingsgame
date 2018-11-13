@@ -40,3 +40,8 @@ std::vector<Vec2> King::availablemoves(std::shared_ptr<Board> b)
 	}
 	return moves;
 }
+
+std::shared_ptr<Piece> King::clone()
+{
+	return std::make_shared<King>(*this);
+}

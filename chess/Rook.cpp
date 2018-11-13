@@ -13,6 +13,12 @@ Rook::~Rook()
 {
 }
 
+std::shared_ptr<Piece> Rook::clone()
+{
+	return std::make_shared<Rook>(*this);
+}
+
+
 std::vector<Vec2> Rook::availablemoves(Board* b)
 {
 	return ray(b, directions);

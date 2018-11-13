@@ -8,7 +8,7 @@
 class Board;
 
 
-class Piece
+class Piece : public std::enable_shared_from_this<Piece> 
 {
 public:
 
@@ -23,16 +23,18 @@ public:
 	Vec2 getPos();
 	void setPos(Vec2 p);
 	void setPos(int p);
-	void move(Board* b, Vec2 sq);
-	void move(std::shared_ptr<Board> b, Vec2 sq);
-	void move(std::shared_ptr<Board> b, int sq);
-	void move(std::shared_ptr<Board> b, Coord coor);
-	void move(Board * b, int sq);
-	void move(Board * b, Coord coor);
+	virtual void move(Board* b, Vec2 sq);
+	virtual void move(std::shared_ptr<Board> b, Vec2 sq);
+	virtual void move(std::shared_ptr<Board> b, int sq);
+	virtual void move(std::shared_ptr<Board> b, Coord coor);
+	virtual void move(Board * b, int sq);
+	virtual void move(Board * b, Coord coor);
 	friend std::ostream &operator<<(std::ostream &output, const Piece& p);
 	std::vector<Vec2> legalMoves(Board * b);
 	std::vector<Vec2> legalMoves(std::shared_ptr<Board> b);
-	
+	virtual std::vector<Vec2> availablemoves(Board *b) = 0;
+	virtual std::vector<Vec2> availablemoves(std::shared_ptr<Board> b) = 0;
+	virtual std::shared_ptr<Piece> clone()= 0;
 protected:
 
 	int id;
@@ -44,8 +46,7 @@ protected:
 	bool vacant(std::shared_ptr<Board> b, Vec2 npos);
 	std::vector<Vec2> ray(Board *b, const std::vector<Vec2>& directions);
 	std::vector<Vec2> ray(std::shared_ptr<Board> b, const std::vector<Vec2>& directions);
-	virtual std::vector<Vec2> availablemoves(Board *b) = 0;
-	virtual std::vector<Vec2> availablemoves(std::shared_ptr<Board> b) = 0;
+	
 	
 
 };

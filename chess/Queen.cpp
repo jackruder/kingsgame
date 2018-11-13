@@ -13,6 +13,12 @@ Queen::~Queen()
 {
 }
 
+std::shared_ptr<Piece> Queen::clone()
+{
+	return std::make_shared<Queen>(*this);
+}
+
+
 std::vector<Vec2> Queen::availablemoves(Board* b)
 {
 	return ray(b, directions);
