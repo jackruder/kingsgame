@@ -28,7 +28,9 @@ Board::Board(const Board& b)
 	for (std::shared_ptr<Piece> oldp : oldPieces)
 	{
 		std::shared_ptr<Piece> p = oldp->clone();
-		squares[toIndex(p->getPos())].setPiece(p);
+		Vec2 pPos = p->getPos();
+		if (!(pPos == Vec2(-1,-1)))
+			squares[toIndex(pPos)].setPiece(p);
 		pieces.push_back(p);
 	}
 	
@@ -46,7 +48,9 @@ Board& Board::operator=(const Board& b)
 	for (std::shared_ptr<Piece> oldp : oldPieces)
 	{
 		std::shared_ptr<Piece> p = oldp->clone();
-		squares[toIndex(p->getPos())].setPiece(p);
+		Vec2 pPos = p->getPos();
+		if (!(pPos == Vec2(-1, -1)))
+			squares[toIndex(pPos)].setPiece(p);
 		pieces.push_back(p);
 	}
 	turn = b.getTurn();
