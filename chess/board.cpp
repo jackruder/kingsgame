@@ -33,8 +33,6 @@ Board::Board(const Board& b)
 			squares[toIndex(pPos)].setPiece(p);
 		pieces.push_back(p);
 	}
-	
-	
 
 }
 
@@ -369,8 +367,33 @@ void Board::nextTurn()
 			moved2 = "none";
 		turn = Color::white;
 	}
-	
-
 }
 
-
+void Board::promote(std::shared_ptr<Piece> p, std::string c)
+{
+	Color n_color = p->getColor();
+	Vec2 n_pos = p->getPos();
+	int n_id = p->getID();
+	std::shared_ptr<Piece> newp;
+	if (c == "q")
+	{
+		std::string n_name = (std::string("promotedq") + p->getName());
+		newp = std::make_shared<Queen>(n_color, n_name, n_id, n_pos);
+	}
+	else if (c == "r")
+	{
+		std::string n_name = (std::string("promotedr") + p->getName());
+		newp = std::make_shared<Rook>(n_color, n_name, n_id, n_pos);
+	}
+	else if (c == "n")
+	{
+		std::string n_name = (std::string("promotedn") + p->getName());
+		newp = std::make_shared<Knight>(n_color, n_name, n_id, n_pos);
+	}
+	else if (c == "b")
+	{
+		std::string n_name = (std::string("promotedb") + p->getName());
+		newp = std::make_shared<Bishop>(n_color, n_name, n_id, n_pos);
+	}
+	
+}   

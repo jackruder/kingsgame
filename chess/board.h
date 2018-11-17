@@ -7,7 +7,6 @@
 
 class Square;
 class Piece;
-
 class Board
 {
 
@@ -52,5 +51,7 @@ public:
 
 	std::vector<std::vector<Coord>> allMoves();
 	void nextTurn();
+		
+	void promote(std::shared_ptr<Piece> p, std::string c);
 
 };

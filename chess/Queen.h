@@ -6,7 +6,7 @@ class Queen : public Piece
 public:
 	Queen(Color c, std::string n, int _id, Vec2 loc);
 	~Queen();
-	std::shared_ptr<Piece> clone();
-	std::vector<Vec2> availablemoves(Board* b);
-	std::vector<Vec2> availablemoves(std::shared_ptr<Board> b);
+	std::shared_ptr<Piece> clone() override;
+	std::vector<Vec2> availablemoves(Board* b) override;
+	std::vector<Vec2> availablemoves(std::shared_ptr<Board> b) override;
 };

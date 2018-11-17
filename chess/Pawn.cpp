@@ -26,21 +26,13 @@ std::vector<Vec2> Pawn::availablemoves(Board* b)
 	if (color == Color::white)
 	{
 		t = 1;
-		Vec2 d(0, 1);
+		d = Vec2(0, 1);
 	}
 	else
 	{
 
 		t = 6;
-		Vec2 d(0, -1);
-	}
-	if (pos[1] == t)
-	{
-		Vec2 forward2(pos[0], pos[1] + 2 * d[1]);
-		if (vacant(b, forward2)) 
-		{
-			moves.push_back(forward2);
-		}			
+		d = Vec2(0, -1);
 	}
 	int newposr = pos[1] + d[1];
 	Vec2 forward1(pos[0], newposr);
@@ -49,12 +41,34 @@ std::vector<Vec2> Pawn::availablemoves(Board* b)
 	Vec2 caps[2] = { capleft, capright };
 	if (vacant(b, forward1))
 	{
-		moves.push_back(forward1);
+		if (b->getSquare(forward1)->getPiece() == nullptr)
+		{
+			moves.push_back(forward1);
+			if (pos[1] == t)
+			{
+				Vec2 forward2(pos[0], pos[1] + 2 * d[1]);
+				if (vacant(b, forward2))
+				{
+					if (b->getSquare(forward2)->getPiece() == nullptr)
+					{
+						moves.push_back(forward2);
+					}
+				}
+			}
+		}
 	}
 	for (Vec2 v : caps)
-		if (vacant(b, v) && !(b->getPiece(v) == nullptr))
+		if (vacant(b, v))
 		{
-			moves.push_back(v);
+			if (!(b->getPiece(v) == nullptr))
+			{
+				moves.push_back(v);
+			}
+			else if (!(b->getPiece(v - d) == nullptr))
+			{
+				if (b->getPiece(v - d)->getName() == b->getMoved2())
+					moves.push_back(v);
+			}
 		}
 	return moves;
 }
@@ -75,14 +89,6 @@ std::vector<Vec2> Pawn::availablemoves(std::shared_ptr<Board> b)
 		t = 6;
 		d = Vec2(0, -1);
 	}
-	if (pos[1] == t)
-	{
-		Vec2 forward2(pos[0], pos[1] + 2 * d[1]);
-		if (vacant(b, forward2))
-		{
-			moves.push_back(forward2);
-		}
-	}
 	int newposr = pos[1] + d[1];
 	Vec2 forward1(pos[0], newposr);
 	Vec2 capleft(pos[0] - 1, newposr);
@@ -90,7 +96,21 @@ std::vector<Vec2> Pawn::availablemoves(std::shared_ptr<Board> b)
 	Vec2 caps[2] = { capleft, capright };
 	if (vacant(b, forward1))
 	{
-		moves.push_back(forward1);
+		if (b->getSquare(forward1)->getPiece() == nullptr)
+		{
+			moves.push_back(forward1);
+			if (pos[1] == t)
+			{
+				Vec2 forward2(pos[0], pos[1] + 2 * d[1]);
+				if (vacant(b, forward2))
+				{
+					if (b->getSquare(forward2)->getPiece() == nullptr)
+					{
+						moves.push_back(forward2);
+					}
+				}
+			}
+		}
 	}
 	for (Vec2 v : caps)
 		if (vacant(b, v))
@@ -107,6 +127,7 @@ std::vector<Vec2> Pawn::availablemoves(std::shared_ptr<Board> b)
 		}
 	return moves;
 }
+
 
 void Pawn::move(Board* b, Vec2 sq) {
 	
@@ -453,3 +474,5 @@ void Pawn::move(Board* b, Coord coor) {
 	}
 	shared_from_this()->setPos(sq); //sets the locaiton of the current piece to the new location
 }
+
+

@@ -88,9 +88,35 @@ int main()
 				std::string smove;
 				std::cin >> smove;
 				Coord move = cMap[smove];
-				if (std::find(moves.begin(), moves.end(), toVec(move)) != moves.end())
+				Vec2 vmove = toVec(move);
+				if (std::find(moves.begin(), moves.end(), vmove) != moves.end())
 				{
-						p->move(b, move);
+						p->move(b, vmove);
+						
+						char pty = p->getSymb();
+						if (pty == 'p' || pty == 'P')
+						{
+							if (vmove[1] == 7 || vmove[1] == 0)
+							{
+								bool validpromo = false;
+								while (!validpromo)
+								{
+									std::string promo;
+									std::cout << "(q)ueen, (k)night, (r)ook, (b)ishop : ";
+									std::cin >> promo;
+									if (promo == "q" || promo == "k" || promo == "r" || promo == "b")
+									{
+										b->promote(p, promo);
+										validpromo = true;
+									}
+									else
+									{
+										std::cout << "Please enter a valid character" << std::endl;
+									}
+								}
+								
+							}
+						}
 						b->nextTurn();
 						std::cout << "Looking to see if " << (b->getTurn() == Color::white ? "white" : "black") << " is in check";			
 						if (b->inCheck(b->getTurn()) == true)
