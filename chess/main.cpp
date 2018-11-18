@@ -91,39 +91,39 @@ int main()
 				Vec2 vmove = toVec(move);
 				if (std::find(moves.begin(), moves.end(), vmove) != moves.end())
 				{
-						p->move(b, vmove);
+					p->move(b, vmove);
 						
-						char pty = p->getSymb();
-						if (pty == 'p' || pty == 'P')
+					char pty = p->getSymb();
+					if (pty == 'p' || pty == 'P')
+					{
+						if (vmove[1] == 7 || vmove[1] == 0)
 						{
-							if (vmove[1] == 7 || vmove[1] == 0)
+							bool validpromo = false;
+							while (!validpromo)
 							{
-								bool validpromo = false;
-								while (!validpromo)
+								std::string promo;
+								std::cout << "(q)ueen, (k)night, (r)ook, (b)ishop : ";
+								std::cin >> promo;
+								if (promo == "q" || promo == "k" || promo == "r" || promo == "b")
 								{
-									std::string promo;
-									std::cout << "(q)ueen, (k)night, (r)ook, (b)ishop : ";
-									std::cin >> promo;
-									if (promo == "q" || promo == "k" || promo == "r" || promo == "b")
-									{
-										b->promote(p, promo);
-										validpromo = true;
-									}
-									else
-									{
-										std::cout << "Please enter a valid character" << std::endl;
-									}
+									b->promote(p, promo);
+									validpromo = true;
 								}
-								
+								else
+								{
+									std::cout << "Please enter a valid character" << std::endl;
+								}
 							}
+								
 						}
-						b->nextTurn();
-						std::cout << "Looking to see if " << (b->getTurn() == Color::white ? "white" : "black") << " is in check";			
-						if (b->inCheck(b->getTurn()) == true)
-						{
-							std::cout << "Check, enter a char to continue" << std::endl;
-						}
-						validMove = true;
+					}
+					b->nextTurn();
+					std::cout << "Looking to see if " << (b->getTurn() == Color::white ? "white" : "black") << " is in check";			
+					if (b->inCheck(b->getTurn()) == true)
+					{
+						std::cout << "Check, enter a char to continue" << std::endl;
+					}
+					validMove = true;
 
 				}
 				else if (smove == "c")

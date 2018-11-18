@@ -369,7 +369,7 @@ void Board::nextTurn()
 	}
 }
 
-void Board::promote(std::shared_ptr<Piece> p, std::string c)
+void Board::promote(std::shared_ptr<Piece>& p, std::string c)
 {
 	Color n_color = p->getColor();
 	Vec2 n_pos = p->getPos();
@@ -395,5 +395,7 @@ void Board::promote(std::shared_ptr<Piece> p, std::string c)
 		std::string n_name = (std::string("promotedb") + p->getName());
 		newp = std::make_shared<Bishop>(n_color, n_name, n_id, n_pos);
 	}
-	
+	squares[toIndex(n_pos)].setPiece(newp);
+	pieces[n_id] = newp;
+	p = newp;
 }   

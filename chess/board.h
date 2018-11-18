@@ -52,6 +52,6 @@ public:
 	std::vector<std::vector<Coord>> allMoves();
 	void nextTurn();
 		
-	void promote(std::shared_ptr<Piece> p, std::string c);
+	void promote(std::shared_ptr<Piece>& p, std::string c);
 
 };
