@@ -3,10 +3,12 @@
 #include "Vec2.h"
 #include <vector>
 #include <memory>
+#include "superptr.h"
 #include "misc.h"
 #include <string>
 class Piece;
 class Vec2;
+
 class Square
 {
 public:
@@ -14,15 +16,15 @@ public:
 	~Square();
 	std::string getName();
 	std::string getColor();
-	std::shared_ptr<Piece> getPiece() const;
+	superptr<Piece> getPiece() const;
 	Vec2 getPos();
-	void setPiece(std::shared_ptr<Piece> p);
+	void setPiece(superptr<Piece> p);
 	friend std::ostream &operator<<(std::ostream &output, const Square& s);
 
 private:
 	std::string name;
 	std::string color;
-	std::shared_ptr<Piece> piece;
+	superptr<Piece> piece;
 	Vec2 pos;
 };
 

@@ -11,6 +11,8 @@
 
 #define WHITE_SQUARE 0xDB
 #define BLACK_SQUARE 0xFF
+
+
 Board::Board()
 	:	turn(Color::white)
 {
@@ -23,11 +25,11 @@ Board::Board(const Board& b)
 	: turn(b.getTurn()), moved2(b.getMoved2()), squares(b.getSquares())
 {
 	genSquares();
-	std::vector<std::shared_ptr<Piece>> oldPieces = b.getPieces();
+	std::vector<superptr<Piece>> oldPieces = b.getPieces();
 	pieces.reserve(32);
-	for (std::shared_ptr<Piece> oldp : oldPieces)
+	for (superptr<Piece> oldp : oldPieces)
 	{
-		std::shared_ptr<Piece> p = oldp->clone();
+		superptr<Piece> p = oldp->clone();
 		Vec2 pPos = p->getPos();
 		if (!(pPos == Vec2(-1,-1)))
 			squares[toIndex(pPos)].setPiece(p);
@@ -39,13 +41,13 @@ Board::Board(const Board& b)
 
 Board& Board::operator=(const Board& b)
 {
-	std::vector<std::shared_ptr<Piece>> oldPieces = b.getPieces();
+	std::vector<superptr<Piece>> oldPieces = b.getPieces();
 	pieces.clear();
 	pieces.reserve(32);
 	genSquares();
-	for (std::shared_ptr<Piece> oldp : oldPieces)
+	for (superptr<Piece> oldp : oldPieces)
 	{
-		std::shared_ptr<Piece> p = oldp->clone();
+		superptr<Piece> p = oldp->clone();
 		Vec2 pPos = p->getPos();
 		if (!(pPos == Vec2(-1, -1)))
 			squares[toIndex(pPos)].setPiece(p);
@@ -65,7 +67,7 @@ std::vector<Square> Board::getSquares() const
 	return squares;
 }
 
-std::vector<std::shared_ptr<Piece>> Board::getPieces() const
+std::vector<superptr<Piece>> Board::getPieces() const
 {
 	return pieces;
 }
@@ -81,15 +83,15 @@ Square* Board::getSquare(int _id) // returns square at location id
 	return &(squares[_id]);
 }
 
-std::shared_ptr<Piece> Board::getPiece(Pname name)// returns pointer to piece by enum name
+superptr<Piece> Board::getPiece(Pname name)// returns pointer to piece by enum name
 {
 	return pieces[static_cast<int>(name)];
 } 
-std::shared_ptr<Piece> Board::getPiece(int _id)
+superptr<Piece> Board::getPiece(int _id)
 {
 	return pieces[_id];
 }
-std::shared_ptr<Piece> Board::getPiece(Vec2 loc)
+superptr<Piece> Board::getPiece(Vec2 loc)
 {
 	return getSquare(loc)->getPiece();
 }
@@ -145,41 +147,35 @@ void Board::genPieces()
 		for (int i = 0; i < 2; i++)
 		{
 			std::string _name(_c + std::string("rook") + std::to_string(i + 1));
-			std::shared_ptr<Piece> newp = std::make_shared<Rook>(c, _name, _id, Vec2(-1, -1));
-			pieces.push_back(newp);
+			pieces.push_back(superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Rook>(c, _name, _id, Vec2(-1, -1)))));
 			_id++;
 		}
 		for (int i = 0; i < 2; i++)
 		{
-			std::string _name(_c + std::string("bishop") + std::to_string(i + 1));
-			std::shared_ptr<Piece> newp = std::make_shared<Bishop>(c, _name, _id, Vec2(-1, -1));
-			pieces.push_back(newp);
+			std::string _name(_c + std::string("bishop") + std::to_string(i + 1));	
+			pieces.push_back(superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Bishop>(c, _name, _id, Vec2(-1, -1)))));
 			_id++;
 		}
 		for (int i = 0; i < 2; i++)
 		{
 			std::string _name(_c + std::string("knight") + std::to_string(i + 1));
-			std::shared_ptr<Piece> newp = std::make_shared<Knight>(c, _name, _id, Vec2(-1, -1));
-			pieces.push_back(newp);
+			pieces.push_back(superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Knight>(c, _name, _id, Vec2(-1, -1)))));
 			_id++;
 		}
 		{ //scopes to keep same var names
 			std::string _name(_c + std::string("king1"));
-			std::shared_ptr<Piece> newp = std::make_shared<King>(c, _name, _id, Vec2(-1, -1));
-			pieces.push_back(newp);
+			pieces.push_back(superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<King>(c, _name, _id, Vec2(-1, -1)))));
 			_id++;
 		}
 		{ 
 			std::string _name(_c + std::string("queen1"));
-			std::shared_ptr<Piece> newp = std::make_shared<Queen>(c, _name, _id, Vec2(-1, -1));
-			pieces.push_back(newp);
+			pieces.push_back(superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Queen>(c, _name, _id, Vec2(-1, -1)))));
 			_id++;
 		}
 		for (int i = 0; i < 8; i++)
 		{
 			std::string _name(_c + std::string("pawn") + std::to_string(i + 1));
-			std::shared_ptr<Piece> newp = std::make_shared<Pawn>(c, _name, _id, Vec2(-1, -1));
-			pieces.push_back(newp);
+			pieces.push_back(superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Pawn>(c, _name, _id, Vec2(-1, -1)))));
 			_id++;
 		}
 	}
@@ -194,7 +190,7 @@ std::vector<Coord> Board::getPosition() const
 {
 	std::vector<Coord> position;
 	position.reserve(32);
-	for (std::shared_ptr<Piece> p : pieces)
+	for (superptr<Piece> p : pieces)
 	{
 		position.push_back(toCoord(p->getPos()));
 	}
@@ -319,7 +315,7 @@ void Board::printLine(int iLine, int iColor1, int iColor2, int cell)
 
 void Board::updateSquares()
 {
-	for (std::shared_ptr<Piece> p : pieces)
+	for (superptr<Piece> p : pieces)
 	{
 		p->move(this, p->getPos());
 	}
@@ -342,7 +338,7 @@ bool Board::inCheck(Color c)
 	Vec2 kpos = pieces[king]->getPos();
 	for (int i = first; i < (first + 16); i++)
 	{
-		std::shared_ptr<Piece> p = pieces[i];
+		superptr<Piece> p = pieces[i];
 		std::vector<Vec2> moves = p->availablemoves(this);
 		for (Vec2 m : moves)
 		{
@@ -369,33 +365,29 @@ void Board::nextTurn()
 	}
 }
 
-void Board::promote(std::shared_ptr<Piece>& p, std::string c)
+void Board::promote(superptr<Piece> p, std::string c)
 {
 	Color n_color = p->getColor();
 	Vec2 n_pos = p->getPos();
 	int n_id = p->getID();
-	std::shared_ptr<Piece> newp;
 	if (c == "q")
 	{
 		std::string n_name = (std::string("promotedq") + p->getName());
-		newp = std::make_shared<Queen>(n_color, n_name, n_id, n_pos);
+		p.reset(new Queen(n_color, n_name, n_id, n_pos));
 	}
 	else if (c == "r")
 	{
 		std::string n_name = (std::string("promotedr") + p->getName());
-		newp = std::make_shared<Rook>(n_color, n_name, n_id, n_pos);
+		p.reset(new Rook(n_color, n_name, n_id, n_pos));
 	}
 	else if (c == "n")
 	{
 		std::string n_name = (std::string("promotedn") + p->getName());
-		newp = std::make_shared<Knight>(n_color, n_name, n_id, n_pos);
+		p.reset(new Knight(n_color, n_name, n_id, n_pos));
 	}
 	else if (c == "b")
 	{
 		std::string n_name = (std::string("promotedb") + p->getName());
-		newp = std::make_shared<Bishop>(n_color, n_name, n_id, n_pos);
+		p.reset(new Bishop(n_color, n_name, n_id, n_pos));
 	}
-	squares[toIndex(n_pos)].setPiece(newp);
-	pieces[n_id] = newp;
-	p = newp;
 }   

@@ -32,7 +32,7 @@ int main()
 			bool isPname = false;
 			bool canMove = false;
 			bool validMove = false;
-			std::shared_ptr<Piece> p;
+			superptr<Piece> p;
 			while (!canMove)
 			{
 				std::cout << "Enter a Piece/Square or (c)ancel:";

@@ -125,6 +125,7 @@
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Rook.h" />
     <ClInclude Include="square.h" />
+    <ClInclude Include="superptr.h" />
     <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>

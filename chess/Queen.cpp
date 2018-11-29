@@ -13,9 +13,9 @@ Queen::~Queen()
 {
 }
 
-std::shared_ptr<Piece> Queen::clone()
+superptr<Piece> Queen::clone()
 {
-	return std::make_shared<Queen>(*this);
+	return superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Queen>(*this)));
 }
 
 

@@ -13,9 +13,9 @@ Rook::~Rook()
 {
 }
 
-std::shared_ptr<Piece> Rook::clone()
+superptr<Piece> Rook::clone()
 {
-	return std::make_shared<Rook>(*this);
+	return superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Rook>(*this)));
 }
 
 

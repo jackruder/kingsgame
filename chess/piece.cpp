@@ -60,7 +60,7 @@ bool Piece::vacant(Board* b, Vec2 npos)  //checks if a square is allowed, regard
 {
 	if (onBoard(npos))
 	{
-		std::shared_ptr<Piece> p = b->getPiece(npos);  //gets the ptr to piece at new position; nullptr if no piece
+		superptr<Piece> p = b->getPiece(npos);  //gets the ptr to piece at new position; nullptr if no piece
 		if (p == nullptr) // no piece, so square is vacant
 			return true;
 		else if (p->getColor() == color) //if new square has a piece of the same color, square is not vacant
@@ -77,7 +77,7 @@ bool Piece::vacant(std::shared_ptr<Board> b, Vec2 npos)  //checks if a square is
 {
 	if (onBoard(npos))
 	{
-		std::shared_ptr<Piece> p = b->getPiece(npos);  //gets the ptr to piece at new position; nullptr if no piece
+		superptr<Piece> p = b->getPiece(npos);  //gets the ptr to piece at new position; nullptr if no piece
 		if (p == nullptr) // no piece, so square is vacant
 			return true;
 		else if (p->getColor() == color) //if new square has a piece of the same color, square is not vacant
@@ -102,13 +102,13 @@ void Piece::move(Board* b, Vec2 sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -116,12 +116,12 @@ void Piece::move(Board* b, Vec2 sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
@@ -140,13 +140,13 @@ void Piece::move(std::shared_ptr<Board> b, Vec2 sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -154,12 +154,12 @@ void Piece::move(std::shared_ptr<Board> b, Vec2 sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
@@ -178,13 +178,13 @@ void Piece::move(std::shared_ptr<Board> b, int sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -192,12 +192,12 @@ void Piece::move(std::shared_ptr<Board> b, int sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
@@ -217,13 +217,13 @@ void Piece::move(std::shared_ptr<Board> b, Coord coor) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -231,12 +231,12 @@ void Piece::move(std::shared_ptr<Board> b, Coord coor) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
@@ -255,13 +255,13 @@ void Piece::move(Board* b, int sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -269,12 +269,12 @@ void Piece::move(Board* b, int sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
@@ -294,13 +294,13 @@ void Piece::move(Board* b, Coord coor) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -308,12 +308,12 @@ void Piece::move(Board* b, Coord coor) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
@@ -334,7 +334,7 @@ std::vector<Vec2> Piece::ray(Board* b, const std::vector<Vec2>& directions)
 			Vec2 a(pos + directions[d] * i);
 			if (onBoard(a[0], a[1]))
 			{
-				std::shared_ptr<Piece> p = b->getPiece(a);
+				superptr<Piece> p = b->getPiece(a);
 				if (p == nullptr)
 				{
 					results.push_back(a);
@@ -368,7 +368,7 @@ std::vector<Vec2> Piece::ray(std::shared_ptr<Board> b, const std::vector<Vec2>& 
 			Vec2 a(pos + directions[d] * i);
 			if (onBoard(a[0], a[1]))
 			{
-				std::shared_ptr<Piece> p = b->getPiece(a);
+				superptr<Piece> p = b->getPiece(a);
 				if (p == nullptr)
 				{
 					results.push_back(a);
@@ -396,7 +396,7 @@ std::vector<Vec2> Piece::legalMoves(Board* b)
 	for (Vec2 m : available)
 	{
 		Board future(*b);
-		std::shared_ptr<Piece> futureSelf = future.getPiece(id);
+		superptr<Piece> futureSelf = future.getPiece(id);
 		futureSelf->move(&future, m);
 		if (!(future.inCheck(future.getTurn())))
 		{
@@ -413,7 +413,7 @@ std::vector<Vec2> Piece::legalMoves(std::shared_ptr<Board> b)
 	for (Vec2 m : available)
 	{
 		Board future(*b);
-		std::shared_ptr<Piece> futureSelf = future.getPiece(id);
+		superptr<Piece> futureSelf = future.getPiece(id);
 		futureSelf->move(&future, m);
 		if (!(future.inCheck(future.getTurn())))
 		{

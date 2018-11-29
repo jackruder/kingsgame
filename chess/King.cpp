@@ -41,7 +41,7 @@ std::vector<Vec2> King::availablemoves(std::shared_ptr<Board> b)
 	return moves;
 }
 
-std::shared_ptr<Piece> King::clone()
+superptr<Piece> King::clone()
 {
-	return std::make_shared<King>(*this);
+	return superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<King>(*this)));
 }

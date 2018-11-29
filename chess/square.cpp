@@ -30,13 +30,13 @@ Vec2 Square::getPos()
 	return pos;
 }
 
-std::shared_ptr<Piece> Square::getPiece() const
+superptr<Piece> Square::getPiece() const
 {
 	return piece;
 }
 
 //setter functions
-void Square::setPiece(std::shared_ptr<Piece> p)
+void Square::setPiece(superptr<Piece> p)
 {
 	piece = p;
 }

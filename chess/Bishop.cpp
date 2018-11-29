@@ -22,7 +22,7 @@ std::vector<Vec2> Bishop::availablemoves(std::shared_ptr<Board> b)
 	return ray(b, directions);
 }
 
-std::shared_ptr<Piece> Bishop::clone()
+superptr<Piece> Bishop::clone()
 {
-	return std::make_shared<Bishop>(*this);
+	return superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Bishop>(*this)));
 }

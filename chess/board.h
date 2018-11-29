@@ -1,19 +1,24 @@
 #pragma once
 #include <iosfwd>
 #include <memory>
+#include "superptr.h"
 #include <vector>
 #include <string>
 #include "misc.h"
 
+
+
 class Square;
 class Piece;
+
+
 class Board
 {
 
 private:
 	void genSquares();
 	Color turn; // none, white, black enum
-	std::vector<std::shared_ptr<Piece>> pieces; // container of pointers to pieces
+	std::vector<superptr<Piece>> pieces; // container of pointers to pieces
 	std::vector<Square> squares; //  2d container of squares
 	void genPieces();
 	std::string moved2;
@@ -27,10 +32,10 @@ public:
 
 	~Board();
 	std::vector<Square> getSquares() const;
-	std::vector<std::shared_ptr<Piece>> getPieces() const;
-	std::shared_ptr<Piece> getPiece(Pname name);// returns pointer to piece given enum name, vec location, or int ID
-	std::shared_ptr<Piece> getPiece(int _id);  // overload for ID (see misc.h)
-	std::shared_ptr<Piece> getPiece(Vec2 loc);  //overload for loc
+	std::vector<superptr<Piece>> getPieces() const;
+	superptr<Piece> getPiece(Pname name);// returns pointer to piece given enum name, vec location, or int ID
+	superptr<Piece> getPiece(int _id);  // overload for ID (see misc.h)
+	superptr<Piece> getPiece(Vec2 loc);  //overload for loc
 	std::string getMoved2() const;
 	void setMoved2(std::string p);
 	Square* getSquare(Vec2 loc); // returns reference to square at location -- takes std::vector or pos.  reference returned since we don't want a square copy
@@ -47,11 +52,11 @@ public:
 	void updateSquares();
 	
 	bool inCheck(Color c);
-	bool checkmate();
+	bool checkmate();	
 
 	std::vector<std::vector<Coord>> allMoves();
 	void nextTurn();
 		
-	void promote(std::shared_ptr<Piece>& p, std::string c);
+	void promote(superptr<Piece> p, std::string c);
 
 };

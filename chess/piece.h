@@ -2,6 +2,7 @@
 #include <iosfwd> 
 #include <vector>
 #include <memory>
+#include "superptr.h"
 #include "misc.h"
 #include "Vec2.h"
 #include <string>
@@ -10,8 +11,8 @@ class Board;
 
 class Piece : public std::enable_shared_from_this<Piece> 
 {
+	
 public:
-
 	Piece(Color c, std::string n, int i, Vec2 loc); 
 
 	~Piece();
@@ -34,9 +35,9 @@ public:
 	std::vector<Vec2> legalMoves(std::shared_ptr<Board> b);
 	virtual std::vector<Vec2> availablemoves(Board *b) = 0;
 	virtual std::vector<Vec2> availablemoves(std::shared_ptr<Board> b) = 0;
-	virtual std::shared_ptr<Piece> clone()= 0;
+	virtual superptr<Piece> clone()= 0;
 protected:
-
+	
 	int id;
 	Color color;
 	const std::string piecename;

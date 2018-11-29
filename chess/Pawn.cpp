@@ -12,9 +12,9 @@ Pawn::~Pawn()
 {
 }
 
-std::shared_ptr<Piece> Pawn::clone()
+superptr<Piece> Pawn::clone()
 {
-	return std::make_shared<Pawn>(*this);
+	return superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Pawn>(*this)));
 }
 
 
@@ -139,7 +139,7 @@ void Pawn::move(Board* b, Vec2 sq) {
 	{
 
 		Square* inq = b->getSquare(Vec2(pos[0] + dirx, pos[1]));
-		std::shared_ptr<Piece> p = inq->getPiece();
+		superptr<Piece> p = inq->getPiece();
 		if (!(p == nullptr))
 		{
 			if (p->getName() == b->getMoved2())
@@ -160,13 +160,13 @@ void Pawn::move(Board* b, Vec2 sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -174,17 +174,17 @@ void Pawn::move(Board* b, Vec2 sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
 	}
-	shared_from_this()->setPos(sq); //sets the locaiton of the current piece to the new location
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
 void Pawn::move(std::shared_ptr<Board> b, Vec2 sq) {
@@ -196,7 +196,7 @@ void Pawn::move(std::shared_ptr<Board> b, Vec2 sq) {
 	{
 
 		Square* inq = b->getSquare(Vec2(pos[0] + dirx, pos[1]));
-		std::shared_ptr<Piece> p = inq->getPiece();
+		superptr<Piece> p = inq->getPiece();
 		if (!(p == nullptr))
 		{
 			if (p->getName() == b->getMoved2())
@@ -217,13 +217,13 @@ void Pawn::move(std::shared_ptr<Board> b, Vec2 sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -231,17 +231,17 @@ void Pawn::move(std::shared_ptr<Board> b, Vec2 sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
 	}
-	shared_from_this()->setPos(sq); //sets the locaiton of the current piece to the new location
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
 void Pawn::move(std::shared_ptr<Board> b, int sq) {
@@ -253,7 +253,7 @@ void Pawn::move(std::shared_ptr<Board> b, int sq) {
 	{
 
 		Square* inq = b->getSquare(Vec2(pos[0] + dirx, pos[1]));
-		std::shared_ptr<Piece> p = inq->getPiece();
+		superptr<Piece> p = inq->getPiece();
 		if (!(p == nullptr))
 		{
 			if (p->getName() == b->getMoved2())
@@ -274,13 +274,13 @@ void Pawn::move(std::shared_ptr<Board> b, int sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -288,17 +288,17 @@ void Pawn::move(std::shared_ptr<Board> b, int sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
 	}
-	shared_from_this()->setPos(sq); //sets the locaiton of the current piece to the new location
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
 void Pawn::move(std::shared_ptr<Board> b, Coord coor) {
@@ -310,7 +310,7 @@ void Pawn::move(std::shared_ptr<Board> b, Coord coor) {
 	{
 
 		Square* inq = b->getSquare(Vec2(pos[0] + dirx, pos[1]));
-		std::shared_ptr<Piece> p = inq->getPiece();
+		superptr<Piece> p = inq->getPiece();
 		if (!(p == nullptr))
 		{
 			if (p->getName() == b->getMoved2())
@@ -332,13 +332,13 @@ void Pawn::move(std::shared_ptr<Board> b, Coord coor) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -346,17 +346,17 @@ void Pawn::move(std::shared_ptr<Board> b, Coord coor) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
 	}
-	shared_from_this()->setPos(sq); //sets the locaiton of the current piece to the new location
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
 void Pawn::move(Board* b, int sq) {
@@ -369,7 +369,7 @@ void Pawn::move(Board* b, int sq) {
 	{
 
 		Square* inq = b->getSquare(Vec2(pos[0] + dirx, pos[1]));
-		std::shared_ptr<Piece> p = inq->getPiece();
+		superptr<Piece> p = inq->getPiece();
 		if (!(p == nullptr))
 		{
 			if (p->getName() == b->getMoved2())
@@ -390,13 +390,13 @@ void Pawn::move(Board* b, int sq) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -404,17 +404,17 @@ void Pawn::move(Board* b, int sq) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
 	}
-	shared_from_this()->setPos(sq); //sets the locaiton of the current piece to the new location
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
 void Pawn::move(Board* b, Coord coor) {
@@ -426,7 +426,7 @@ void Pawn::move(Board* b, Coord coor) {
 	{
 
 		Square* inq = b->getSquare(Vec2(pos[0] + dirx, pos[1]));
-		std::shared_ptr<Piece> p = inq->getPiece();
+		superptr<Piece> p = inq->getPiece();
 		if (!(p == nullptr))
 		{
 			if (p->getName() == b->getMoved2())
@@ -448,13 +448,13 @@ void Pawn::move(Board* b, Coord coor) {
 			Square* currentSquare = b->getSquare(current);	//gets the square the piece is on
 			if (newSquare->getPiece() == nullptr)						//checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this());	//if no piece, we just set the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//if no piece, we just set the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//then set the piece of the old square to none
 			}
 			else												//if there is a piece
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());	//sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));	//sets the piece of the new square to the current piece
 				currentSquare->setPiece(nullptr);				//sets the piece of the old square to none
 			}
 		}
@@ -462,17 +462,17 @@ void Pawn::move(Board* b, Coord coor) {
 		{
 			if (newSquare->getPiece() == nullptr)  //checks if the new square has a piece
 			{
-				newSquare->setPiece(shared_from_this()); // if no, sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id)); // if no, sets the piece of the new square to the current piece
 			}
 			else												//if yes,
 			{
 				newSquare->getPiece()->setPos(empty);			//this is a capture, so piece at new square now has no location
-				newSquare->setPiece(shared_from_this());  //sets the piece of the new square to the current piece
+				newSquare->setPiece(b->getPiece(id));  //sets the piece of the new square to the current piece
 
 			}
 		}
 	}
-	shared_from_this()->setPos(sq); //sets the locaiton of the current piece to the new location
+	b->getPiece(id)->setPos(sq); //sets the locaiton of the current piece to the new location
 }
 
 

@@ -40,8 +40,7 @@ std::vector<Vec2> Knight::availablemoves(std::shared_ptr<Board> b)
 	return moves;
 }
 
-std::shared_ptr<Piece> Knight::clone()
+superptr<Piece> Knight::clone()
 {
-	return std::make_shared<Knight>(*this);
+	return superptr<Piece>(std::make_shared<std::unique_ptr<Piece>>(std::make_unique<Knight>(*this)));
 }
-
